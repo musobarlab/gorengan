@@ -1,8 +1,14 @@
-hash: 96a7fe0122da39034f0723d2f3fd2363db522cf6b2001fe11de9ab34acc7fdd3
-updated: 2019-03-25T14:24:21.772848+07:00
+hash: cbe77d54da854d5226dc909ff2470bf6d065906217f88c90250433d34e08dfc0
+updated: 2019-03-25T16:05:18.801441+07:00
 imports:
 - name: github.com/dgrijalva/jwt-go
   version: 3af4c746e1c248ee8491a3e0c6f7a9cd831e95f8
+- name: github.com/jinzhu/gorm
+  version: 472c70caa40267cb89fd8facb07fe6454b578626
+- name: github.com/jinzhu/inflection
+  version: 04140366298a54a039076d798123ffa108fff46c
+- name: github.com/joho/godotenv
+  version: 23d116af351c84513e1946b527c88823e476be13
 - name: github.com/labstack/echo
   version: 739700bf4ef7f1dca5b111dec55114fc66207aaa
   subpackages:

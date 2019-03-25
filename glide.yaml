@@ -2,3 +2,8 @@ package: github.com/musobarlab/gorengan
 import:
 - package: github.com/labstack/echo
   version: 3.3.9
+- package: github.com/jinzhu/gorm
+  version: v1.9.2
+- package: github.com/jinzhu/inflection
+- package: github.com/joho/godotenv
+  version: v1.3.0
