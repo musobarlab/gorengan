@@ -7,3 +7,7 @@ import:
 - package: github.com/jinzhu/inflection
 - package: github.com/joho/godotenv
   version: v1.3.0
+- package: github.com/graph-gophers/graphql-go
+- package: golang.org/x/net
+  subpackages:
+  - context

@@ -1,10 +1,27 @@
-hash: cbe77d54da854d5226dc909ff2470bf6d065906217f88c90250433d34e08dfc0
-updated: 2019-03-25T16:05:18.801441+07:00
+hash: 93b0645881f62b62d14b18005569187acc4adaf25e480f840526a17561211192
+updated: 2019-03-25T18:54:14.404954+07:00
 imports:
 - name: github.com/dgrijalva/jwt-go
   version: 3af4c746e1c248ee8491a3e0c6f7a9cd831e95f8
+- name: github.com/graph-gophers/graphql-go
+  version: 3e8838d4614c12ab337e796548521744f921e05d
+  subpackages:
+  - errors
+  - internal/common
+  - internal/exec
+  - internal/exec/packer
+  - internal/exec/resolvable
+  - internal/exec/selected
+  - internal/query
+  - internal/schema
+  - internal/validation
+  - introspection
+  - log
+  - trace
 - name: github.com/jinzhu/gorm
   version: 472c70caa40267cb89fd8facb07fe6454b578626
+  subpackages:
+  - dialects/postgres
 - name: github.com/jinzhu/inflection
   version: 04140366298a54a039076d798123ffa108fff46c
 - name: github.com/joho/godotenv
@@ -20,10 +37,20 @@ imports:
   - color
   - log
   - random
+- name: github.com/lib/pq
+  version: 5ccc9857e3a95a4233a13e445831cb31b90e73a6
+  subpackages:
+  - hstore
+  - oid
 - name: github.com/mattn/go-colorable
   version: 3a70a971f94a22f2fa562ffcc7a0eb45f5daf045
 - name: github.com/mattn/go-isatty
   version: c2a7a6ca930a4cd0bc33a3f298eb71960732a3a7
+- name: github.com/opentracing/opentracing-go
+  version: 659c90643e714681897ec2521c60567dd21da733
+  subpackages:
+  - ext
+  - log
 - name: github.com/valyala/bytebufferpool
   version: cdfbe9377474227bb42120c1e22fd4433e7f69bf
 - name: github.com/valyala/fasttemplate
@@ -33,6 +60,10 @@ imports:
   subpackages:
   - acme
   - acme/autocert
+- name: golang.org/x/net
+  version: e3b2ff56ed879efa686c9d09ed74f9bfe42f1a1d
+  subpackages:
+  - context
 - name: golang.org/x/sys
   version: f49334f85ddcf0f08d7fb6dd7363e9e6d6b777eb
   subpackages:
