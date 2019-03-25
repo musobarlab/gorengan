@@ -1,0 +1,4 @@
+package: github.com/musobarlab/gorengan
+import:
+- package: github.com/labstack/echo
+  version: 3.3.9
