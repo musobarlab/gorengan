@@ -1,0 +1,62 @@
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+type Query {
+    product(id: ID!): Product
+    products(productsArgs: ProductsArgs): Products
+}
+
+type Mutation {
+    createCategory(category: CategoryInput!): Category
+    createProduct(product: ProductInput!): Product
+    deleteProduct(id: ID!): Product
+}
+
+scalar Time
+
+input ProductsArgs {
+    query: String
+    limit: Int
+    page: Int
+    sort: String
+    orderBy: String
+}
+
+input ProductInput {
+	id: ID!
+	name: String!
+	quantity: Int!
+	category: ID!
+}
+
+input CategoryInput {
+	id: ID!
+	name: String!
+}
+
+type Products {
+	products: [Product]!
+	meta: Meta
+}
+
+type Product {
+    id: ID!
+	name: String!
+	quantity: Int!
+	category: Category
+	createdAt: Time
+}
+
+type Category {
+	id: ID!
+	name: String!
+}
+
+type Meta {
+    page: Int
+    limit: Int
+    totalRecords: Int
+    totalPages: Int
+}
