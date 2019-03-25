@@ -77,6 +77,23 @@ func (r *Resolver) Products(ctx context.Context, args *ProductsQueryArgs) (*Prod
 
 	products := productsOutput.Result.(domain.Products)
 
+	if len(products) <= 0 {
+		limitInt32 := int32(params.Limit)
+		pageInt32 := int32(params.Page)
+		totalInt32 := int32(0)
+		totalPageInt32 := int32(0)
+
+		meta.limit = &limitInt32
+		meta.page = &pageInt32
+		meta.totalRecords = &totalInt32
+		meta.totalPages = &totalPageInt32
+
+		result.products = productsResolver
+		result.meta = &meta
+
+		return &result, nil
+	}
+
 	for _, product := range products {
 		productsResolver = append(productsResolver, &ProductResolver{product})
 	}
