@@ -29,11 +29,27 @@ input ProductInput {
 	name: String!
 	quantity: Int!
 	category: ID!
+    creatorId: String!
+    creatorIp: String!
+	created: Time
+    editorId: String!
+    editorIp: String!
+    lastModified: Time
+    isDeleted: Boolean
+    deleted: Time
 }
 
 input CategoryInput {
 	id: ID!
 	name: String!
+    creatorId: String!
+    creatorIp: String!
+	created: Time
+    editorId: String!
+    editorIp: String!
+    lastModified: Time
+    isDeleted: Boolean
+    deleted: Time
 }
 
 type Products {
