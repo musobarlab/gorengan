@@ -2,10 +2,10 @@ package shared
 
 // AllowedSortFields is allowed field name for sorting
 var AllowedSortFields = []string{
-	"NAME",
-	"ID",
-	"CREATED",
-	"LAST_MODIFIED",
+	"name",
+	"id",
+	"created",
+	"last_modified",
 }
 
 // Parameters data structure
