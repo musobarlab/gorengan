@@ -1,16 +1,26 @@
 package resolver
 
 import (
+	"time"
+
 	"github.com/graph-gophers/graphql-go"
 	"github.com/musobarlab/gorengan/modules/product/domain"
 )
 
 // ProductInput struct
 type ProductInput struct {
-	ID       string
-	Name     string
-	Quantity int32
-	Category string
+	ID           string
+	Name         string
+	Quantity     int32
+	Category     string
+	CreatorID    string
+	CreatorIP    string
+	Created      *time.Time
+	EditorID     string
+	EditorIP     string
+	LastModified *time.Time
+	IsDeleted    *bool
+	Deleted      *time.Time
 }
 
 // ProductResolver resolver

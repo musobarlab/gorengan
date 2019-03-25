@@ -1,14 +1,24 @@
 package resolver
 
 import (
+	"time"
+
 	"github.com/graph-gophers/graphql-go"
 	"github.com/musobarlab/gorengan/modules/product/domain"
 )
 
 // CategoryInput struct
 type CategoryInput struct {
-	ID   string
-	Name string
+	ID           string
+	Name         string
+	CreatorID    string
+	CreatorIP    string
+	Created      *time.Time
+	EditorID     string
+	EditorIP     string
+	LastModified *time.Time
+	IsDeleted    *bool
+	Deleted      *time.Time
 }
 
 // CategoryResolver resolver
