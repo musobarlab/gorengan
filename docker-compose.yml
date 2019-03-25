@@ -1,0 +1,21 @@
+version: '2'
+
+services:
+  postgres:
+    container_name: product_db
+    working_dir: /usr/app
+    volumes:
+        - postgres_data:/var/lib/postgresql/data
+    image: 'postgres:9.6.10-alpine'
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: 12345
+      POSTGRES_DB : product_db
+      PG_VERSION: '9.6.10-alpine'
+    ports:
+        - "5432:5432"
+volumes:
+  postgres_data:
+
+# docker exec -it product_db bash
+# psql postgres -U user -p 5432 product_db
