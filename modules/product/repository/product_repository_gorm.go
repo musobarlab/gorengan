@@ -70,7 +70,7 @@ func (r *ProductRepositoryGorm) FindAll(params *shared.Parameters) shared.Output
 func (r *ProductRepositoryGorm) Count(params *shared.Parameters) shared.Output {
 	var count int
 
-	db := r.db.Model(&domain.Product{}).Offset(params.Offset).Limit(params.Limit)
+	db := r.db.Model(&domain.Product{})
 
 	if len(params.OrderBy) > 0 {
 		db = db.Order(params.OrderBy)

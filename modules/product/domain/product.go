@@ -34,10 +34,10 @@ func (c Category) TableName() string {
 }
 
 // Products type list of Product
-type Products []Product
+type Products []*Product
 
 // Categories type list of Category
-type Categories []Category
+type Categories []*Category
 
 // Validate function
 func (p *Product) Validate() error {
