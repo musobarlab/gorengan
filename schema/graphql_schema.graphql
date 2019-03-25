@@ -46,12 +46,27 @@ type Product {
 	name: String!
 	quantity: Int!
 	category: Category
-	createdAt: Time
+    creatorId: String!
+    creatorIp: String!
+	created: Time
+    editorId: String!
+    editorIp: String!
+    lastModified: Time
+    isDeleted: Boolean
+    deleted: Time
 }
 
 type Category {
 	id: ID!
 	name: String!
+    creatorId: String!
+    creatorIp: String!
+	created: Time
+    editorId: String!
+    editorIp: String!
+    lastModified: Time
+    isDeleted: Boolean
+    deleted: Time
 }
 
 type Meta {
