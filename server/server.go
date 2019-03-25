@@ -9,7 +9,7 @@ import (
 	"github.com/labstack/echo/middleware"
 	"github.com/musobarlab/gorengan/config"
 	"github.com/musobarlab/gorengan/database"
-	"github.com/musobarlab/gorengan/modules/product/graphql/resolver"
+	"github.com/musobarlab/gorengan/graphql/resolver"
 	"github.com/musobarlab/gorengan/modules/product/repository"
 	"github.com/musobarlab/gorengan/modules/product/usecase"
 	"github.com/musobarlab/gorengan/schema"
