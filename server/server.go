@@ -9,21 +9,19 @@ import (
 
 // EchoServer struct
 type EchoServer struct {
-	e    *echo.Echo
 	port int
 }
 
 // NewEchoServer echo server constructor
 func NewEchoServer(port int) (*EchoServer, error) {
-	e := echo.New()
 	return &EchoServer{
-		e:    e,
 		port: port,
 	}, nil
 }
 
 // Run function
 func (s *EchoServer) Run() {
-	s.e.Use(middleware.Logger())
-	s.e.Logger.Fatal(s.e.Start(fmt.Sprintf(":%d", s.port)))
+	e := echo.New()
+	e.Use(middleware.Logger())
+	e.Logger.Fatal(e.Start(fmt.Sprintf(":%d", s.port)))
 }
