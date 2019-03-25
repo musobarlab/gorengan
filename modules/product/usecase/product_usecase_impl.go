@@ -3,6 +3,7 @@ package usecase
 import (
 	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/jinzhu/gorm"
 	"github.com/musobarlab/gorengan/modules/product/domain"
@@ -52,6 +53,18 @@ func (u *ProductUsecaseImpl) CreateProduct(product *domain.Product) shared.Outpu
 	return shared.Output{Result: productSaved}
 }
 
+// GetProduct function
+func (u *ProductUsecaseImpl) GetProduct(id string) shared.Output {
+	productResult := u.productRepositoryRead.FindByID(id)
+	if productResult.Err != nil {
+		return shared.Output{Err: productResult.Err}
+	}
+
+	product := productResult.Result.(*domain.Product)
+
+	return shared.Output{Result: product}
+}
+
 // GetAllProduct function
 func (u *ProductUsecaseImpl) GetAllProduct(params *shared.Parameters) shared.Output {
 	params.Page = 1
@@ -82,7 +95,7 @@ func (u *ProductUsecaseImpl) GetAllProduct(params *shared.Parameters) shared.Out
 			return shared.Output{Err: fmt.Errorf(shared.ErrorParameterInvalid, "order by")}
 		}
 	} else {
-		params.OrderBy = "created"
+		params.OrderBy = "name"
 	}
 
 	if len(params.Sort) > 0 {
@@ -94,7 +107,7 @@ func (u *ProductUsecaseImpl) GetAllProduct(params *shared.Parameters) shared.Out
 		params.Sort = "asc"
 	}
 
-	params.OrderBy = fmt.Sprintf(`"%s" %s`, params.OrderBy, params.Sort)
+	params.OrderBy = fmt.Sprintf(`"%s" %s`, strings.ToUpper(params.OrderBy), params.Sort)
 
 	productResult := u.productRepositoryRead.FindAll(params)
 	if productResult.Err != nil {

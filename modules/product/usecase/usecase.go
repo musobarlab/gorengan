@@ -8,6 +8,7 @@ import (
 // ProductUsecase interface
 type ProductUsecase interface {
 	CreateProduct(*domain.Product) shared.Output
+	GetProduct(string) shared.Output
 	GetAllProduct(*shared.Parameters) shared.Output
 	GetTotalProduct(*shared.Parameters) shared.Output
 }
