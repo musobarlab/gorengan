@@ -53,8 +53,8 @@ input CategoryInput {
 }
 
 type Products {
-	products: [Product]!
-	meta: Meta
+    products: [Product]!
+    meta: Meta
 }
 
 type Product {
