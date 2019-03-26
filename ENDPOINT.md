@@ -30,6 +30,24 @@ arguments
 }
 ```
 
+### Get Product (by ID)
+
+payload
+```javascript
+query {
+  product(id: "7") {
+    id
+    name
+    quantity
+    category {
+      id
+      name
+    }
+    created
+  }
+}
+```
+
 ### Get Products
 
 payload
