@@ -23,6 +23,11 @@ var (
 	DBPassword string
 	// DBPort config
 	DBPort int
+
+	// BasicAuthUsername config
+	BasicAuthUsername string
+	// BasicAuthPassword config
+	BasicAuthPassword string
 )
 
 // Load function will load all config from environment variable
@@ -90,6 +95,22 @@ func Load() error {
 	// set DBPort
 	DBPort = dbPort
 	// ------------------------------------
+
+	basicAuthUsername, ok := os.LookupEnv("BASIC_AUTH_USERNAME")
+	if !ok {
+		return errors.New("BASIC_AUTH_USERNAME env is not loaded")
+	}
+
+	// set BasicAuthUsername
+	BasicAuthUsername = basicAuthUsername
+
+	basicAuthPassword, ok := os.LookupEnv("BASIC_AUTH_PASSWORD")
+	if !ok {
+		return errors.New("BASIC_AUTH_PASSWORD env is not loaded")
+	}
+
+	// set BasicAuthPassword
+	BasicAuthPassword = basicAuthPassword
 
 	return nil
 }
