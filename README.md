@@ -27,6 +27,10 @@ $ go build
 $ ./gorengan
 ```
 
+### API Documentation
+
+open https://github.com/musobarlab/gorengan/blob/master/ENDPOINT.md
+
 ### Author
 
 Wuriyanto https://github.com/wuriyanto48
