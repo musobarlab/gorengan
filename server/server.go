@@ -36,9 +36,12 @@ func NewEchoServer(port int) (*EchoServer, error) {
 	}
 
 	productRepository := repository.NewProductRepositoryGorm(db)
-	productUsecase := usecase.NewProductUsecaseImpl(productRepository, productRepository)
+	categoryRepository := repository.NewCategoryRepositoryGorm(db)
 
-	gqlSchema := graphql.MustParseSchema(graphqlSchema, &resolver.Resolver{ProductUsecase: productUsecase})
+	productUsecase := usecase.NewProductUsecaseImpl(productRepository, productRepository, categoryRepository)
+	categoryUsecase := usecase.NewCategoryUsecaseImpl(categoryRepository, categoryRepository)
+
+	gqlSchema := graphql.MustParseSchema(graphqlSchema, &resolver.Resolver{ProductUsecase: productUsecase, CategoryUsecase: categoryUsecase})
 
 	graphQLHandler := &relay.Handler{Schema: gqlSchema}
 
