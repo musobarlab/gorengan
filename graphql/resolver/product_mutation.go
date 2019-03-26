@@ -40,5 +40,13 @@ func (r *Resolver) CreateProduct(ctx context.Context, args *ProductInputArgs) (*
 
 // DeleteProduct mutation
 func (r *Resolver) DeleteProduct(ctx context.Context, args *DeleteProductArgs) (*ProductResolver, error) {
-	return nil, nil
+	output := r.ProductUsecase.RemoveProduct(string(args.ID))
+
+	if output.Err != nil {
+		return nil, output.Err
+	}
+
+	product := output.Result.(*domain.Product)
+
+	return &ProductResolver{product}, nil
 }

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/jinzhu/gorm"
 	"github.com/musobarlab/gorengan/modules/product/domain"
@@ -64,6 +65,28 @@ func (u *ProductUsecaseImpl) CreateProduct(product *domain.Product) shared.Outpu
 
 	productSaved := productSaveOutput.Result.(*domain.Product)
 
+	return shared.Output{Result: productSaved}
+}
+
+// RemoveProduct function
+func (u *ProductUsecaseImpl) RemoveProduct(id string) shared.Output {
+	productResult := u.productRepositoryRead.FindByID(id)
+	if productResult.Err != nil {
+		return shared.Output{Err: productResult.Err}
+	}
+
+	product := productResult.Result.(*domain.Product)
+
+	// set flag as deleted
+	product.IsDeleted = true
+	product.Deleted = time.Now()
+
+	productSaveOutput := u.productRepositoryWrite.Save(product)
+	if productSaveOutput.Err != nil {
+		return shared.Output{Err: productSaveOutput.Err}
+	}
+
+	productSaved := productSaveOutput.Result.(*domain.Product)
 	return shared.Output{Result: productSaved}
 }
 
