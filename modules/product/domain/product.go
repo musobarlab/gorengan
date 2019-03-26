@@ -49,5 +49,22 @@ func (p *Product) Validate() error {
 		return errors.New("product name is required")
 	}
 
+	if len(p.CategoryID) <= 0 {
+		return errors.New("category id is required")
+	}
+
+	return nil
+}
+
+// Validate function
+func (c *Category) Validate() error {
+	if len(c.ID) <= 0 {
+		return errors.New("category id is required")
+	}
+
+	if len(c.Name) <= 0 {
+		return errors.New("category name is required")
+	}
+
 	return nil
 }
