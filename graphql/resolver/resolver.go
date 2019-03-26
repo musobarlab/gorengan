@@ -6,5 +6,6 @@ import (
 
 // Resolver for product module
 type Resolver struct {
-	ProductUsecase usecase.ProductUsecase
+	ProductUsecase  usecase.ProductUsecase
+	CategoryUsecase usecase.CategoryUsecase
 }

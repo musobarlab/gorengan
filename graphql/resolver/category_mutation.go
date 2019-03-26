@@ -19,5 +19,13 @@ func (r *Resolver) CreateCategory(ctx context.Context, args *CategoryInputArgs) 
 	category.Name = args.Category.Name
 	category.Created = time.Now()
 	category.LastModified = time.Now()
-	return nil, nil
+
+	output := r.CategoryUsecase.CreateCategory(&category)
+	if output.Err != nil {
+		return nil, output.Err
+	}
+
+	categorySaved := output.Result.(*domain.Category)
+
+	return &CategoryResolver{categorySaved}, nil
 }
