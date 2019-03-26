@@ -6,7 +6,7 @@ Golang GraphQL Server Starter Kit
 
 - Clone Repository
 ```shell
-$ git clone https://github.com/musobarlab/gorengan
+$ git clone https://github.com/musobarlab/gorengan.git
 ```
 
 - Install `Glide` as a Package Manager https://glide.sh/
