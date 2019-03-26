@@ -15,11 +15,17 @@ import (
 type ProductUsecaseImpl struct {
 	productRepositoryRead  repository.ProductRepository
 	productRepositoryWrite repository.ProductRepository
+	categoryRepository     repository.CategoryRepository
 }
 
 // NewProductUsecaseImpl function
-func NewProductUsecaseImpl(productRepositoryRead, productRepositoryWrite repository.ProductRepository) *ProductUsecaseImpl {
-	return &ProductUsecaseImpl{productRepositoryRead: productRepositoryRead, productRepositoryWrite: productRepositoryWrite}
+func NewProductUsecaseImpl(productRepositoryRead, productRepositoryWrite repository.ProductRepository,
+	categoryRepository repository.CategoryRepository) *ProductUsecaseImpl {
+	return &ProductUsecaseImpl{
+		productRepositoryRead:  productRepositoryRead,
+		productRepositoryWrite: productRepositoryWrite,
+		categoryRepository:     categoryRepository,
+	}
 }
 
 // CreateProduct function
@@ -35,6 +41,14 @@ func (u *ProductUsecaseImpl) CreateProduct(product *domain.Product) shared.Outpu
 		if productExist != nil {
 			return shared.Output{Err: fmt.Errorf("product with id %s already exist", product.ID)}
 		}
+	}
+
+	categoryOutput := u.categoryRepository.FindByID(product.CategoryID)
+	if categoryOutput.Err != nil {
+		if categoryOutput.Err == gorm.ErrRecordNotFound {
+			return shared.Output{Err: fmt.Errorf("category with id %s not found", product.CategoryID)}
+		}
+		return shared.Output{Err: productOutput.Err}
 	}
 
 	err := product.Validate()
