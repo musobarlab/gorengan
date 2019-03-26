@@ -2,14 +2,16 @@ package server
 
 import (
 	"fmt"
+	"net/http"
 
 	"github.com/graph-gophers/graphql-go"
 	"github.com/graph-gophers/graphql-go/relay"
 	"github.com/labstack/echo"
-	"github.com/labstack/echo/middleware"
+	echoMiddleware "github.com/labstack/echo/middleware"
 	"github.com/musobarlab/gorengan/config"
 	"github.com/musobarlab/gorengan/database"
 	"github.com/musobarlab/gorengan/graphql/resolver"
+	"github.com/musobarlab/gorengan/middleware"
 	"github.com/musobarlab/gorengan/modules/product/repository"
 	"github.com/musobarlab/gorengan/modules/product/usecase"
 	"github.com/musobarlab/gorengan/schema"
@@ -54,9 +56,14 @@ func NewEchoServer(port int) (*EchoServer, error) {
 // Run function
 func (s *EchoServer) Run() {
 	e := echo.New()
-	e.Use(middleware.Logger())
+	e.Use(echoMiddleware.Logger())
 
-	e.POST("/graphql", echo.WrapHandler(s.graphQLHandler))
+	e.GET("/", func(c echo.Context) error {
+		return c.String(http.StatusOK, "Up and running !!")
+	})
+
+	// secure graphql route with Basic Auth
+	e.POST("/graphql", echo.WrapHandler(s.graphQLHandler), middleware.BasicAuth(config.BasicAuthUsername, config.BasicAuthPassword))
 
 	e.Logger.Fatal(e.Start(fmt.Sprintf(":%d", s.port)))
 
