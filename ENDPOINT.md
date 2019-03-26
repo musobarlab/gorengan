@@ -94,7 +94,7 @@ arguments
 ```json
 {
   "category": {
-	"id": "4",
+    "id": "4",
     "name": "Fashion"
   }
 }
