@@ -25,13 +25,13 @@ input ProductsArgs {
 }
 
 input ProductInput {
-	id: ID!
-	name: String!
-	quantity: Int!
-	category: ID!
+    id: ID!
+    name: String!
+    quantity: Int!
+    category: ID!
     creatorId: String!
     creatorIp: String!
-	created: Time
+    created: Time
     editorId: String!
     editorIp: String!
     lastModified: Time
@@ -40,11 +40,11 @@ input ProductInput {
 }
 
 input CategoryInput {
-	id: ID!
-	name: String!
+    id: ID!
+    name: String!
     creatorId: String!
     creatorIp: String!
-	created: Time
+    created: Time
     editorId: String!
     editorIp: String!
     lastModified: Time
@@ -59,12 +59,12 @@ type Products {
 
 type Product {
     id: ID!
-	name: String!
-	quantity: Int!
-	category: Category
+    name: String!
+    quantity: Int!
+    category: Category
     creatorId: String!
     creatorIp: String!
-	created: Time
+    created: Time
     editorId: String!
     editorIp: String!
     lastModified: Time
@@ -73,11 +73,11 @@ type Product {
 }
 
 type Category {
-	id: ID!
-	name: String!
+    id: ID!
+    name: String!
     creatorId: String!
     creatorIp: String!
-	created: Time
+    created: Time
     editorId: String!
     editorIp: String!
     lastModified: Time
