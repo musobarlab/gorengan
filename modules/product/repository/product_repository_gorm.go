@@ -40,7 +40,7 @@ func (r *ProductRepositoryGorm) Delete(product *domain.Product) shared.Output {
 func (r *ProductRepositoryGorm) FindByID(id string) shared.Output {
 	var product domain.Product
 
-	err := r.db.Where(&domain.Product{ID: id}).Take(&product).Error
+	err := r.db.Preload("Category").Where(&domain.Product{ID: id}).Take(&product).Error
 	if err != nil {
 		return shared.Output{Err: err}
 	}
