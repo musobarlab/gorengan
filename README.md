@@ -1,5 +1,7 @@
 ## Gorengan
 
+[![Build Status](https://travis-ci.org/musobarlab/gorengan.svg?branch=master)](https://travis-ci.org/musobarlab/gorengan)
+
 Golang GraphQL Server Starter Kit
 
 ### Getting Started
