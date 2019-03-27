@@ -4,5 +4,15 @@ go:
  - 1.10.x
  - master
 
+addons:
+  apt:
+    sources:
+    - sourceline: ppa:masterminds/glide
+    packages:
+    - glide
+
+install:
+  - glide install
+
 script:
  - make test
