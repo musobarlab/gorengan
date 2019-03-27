@@ -27,6 +27,11 @@ $ go build
 $ ./gorengan
 ```
 
+### Unit test
+```shell
+$ make test
+```
+
 ### API Documentation
 
 open https://github.com/musobarlab/gorengan/blob/master/ENDPOINT.md
