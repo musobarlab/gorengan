@@ -5,6 +5,7 @@ import (
 
 	"github.com/musobarlab/gorengan/modules/product/domain"
 	productMock "github.com/musobarlab/gorengan/modules/product/repository/mock"
+	"github.com/musobarlab/gorengan/modules/shared"
 )
 
 // TODO
@@ -78,6 +79,60 @@ func TestProductUsecase(t *testing.T) {
 
 		if output.Err == nil {
 			t.Errorf("remove product should return error")
+		}
+	})
+
+	t.Run("should success test get product", func(t *testing.T) {
+		productRepositoryMock := productMock.NewProductRepositoryMock()
+		categoryRepositoryMock := productMock.NewCategoryRepositoryMock()
+
+		productUsecase := NewProductUsecaseImpl(productRepositoryMock, productRepositoryMock, categoryRepositoryMock)
+
+		output := productUsecase.GetProduct("1")
+
+		if output.Err != nil {
+			t.Errorf("get product should return success")
+		}
+
+		product := output.Result.(*domain.Product)
+		if product.ID != "1" {
+			t.Errorf("get product should return product with ID 1")
+		}
+	})
+
+	t.Run("should error test get product when product get by not found ID", func(t *testing.T) {
+		productRepositoryMock := productMock.NewProductRepositoryMock()
+		categoryRepositoryMock := productMock.NewCategoryRepositoryMock()
+
+		productUsecase := NewProductUsecaseImpl(productRepositoryMock, productRepositoryMock, categoryRepositoryMock)
+
+		output := productUsecase.GetProduct("3")
+
+		if output.Err == nil {
+			t.Errorf("get product should return error")
+		}
+
+		if output.Result != nil {
+			t.Errorf("get product should return nil result")
+		}
+	})
+
+	t.Run("should success test get products", func(t *testing.T) {
+		productRepositoryMock := productMock.NewProductRepositoryMock()
+		categoryRepositoryMock := productMock.NewCategoryRepositoryMock()
+
+		productUsecase := NewProductUsecaseImpl(productRepositoryMock, productRepositoryMock, categoryRepositoryMock)
+
+		output := productUsecase.GetAllProduct(&shared.Parameters{})
+
+		if output.Err != nil {
+			t.Errorf("get product should return success")
+		}
+
+		products := output.Result.(domain.Products)
+
+		if len(products) <= 0 {
+			t.Errorf("get products list with lenght greater than 0")
 		}
 	})
 }
