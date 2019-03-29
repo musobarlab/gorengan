@@ -41,17 +41,21 @@ func NewEchoServer(port int) (*EchoServer, error) {
 
 	db.LogMode(true)
 
+	// load graphql schema file, and convert to string
 	graphqlSchema, err := schema.LoadGraphQLSchema()
 	if err != nil {
 		return nil, err
 	}
 
+	// initial repository
 	productRepository := pr.NewProductRepositoryGorm(db)
 	categoryRepository := cr.NewCategoryRepositoryGorm(db)
 
+	// initial usecase
 	productUsecase := pu.NewProductUsecaseImpl(productRepository, productRepository, categoryRepository)
 	categoryUsecase := cu.NewCategoryUsecaseImpl(categoryRepository, categoryRepository)
 
+	// initial graphql handler/ resolver
 	productGraphQLHandler := pd.GraphQLProductHandler{ProductUsecase: productUsecase}
 	categoryGraphQLHandler := cd.GraphQLCategoryHandler{CategoryUsecase: categoryUsecase}
 
@@ -61,6 +65,7 @@ func NewEchoServer(port int) (*EchoServer, error) {
 	graphqlResolver.GraphQLProductHandler = productGraphQLHandler
 	graphqlResolver.GraphQLCategoryHandler = categoryGraphQLHandler
 
+	// parse grapqhql schema to code
 	gqlSchema := graphql.MustParseSchema(graphqlSchema, &graphqlResolver)
 
 	graphQLHandler := &relay.Handler{Schema: gqlSchema}
