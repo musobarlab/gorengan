@@ -10,12 +10,21 @@ import (
 	echoMiddleware "github.com/labstack/echo/middleware"
 	"github.com/musobarlab/gorengan/config"
 	"github.com/musobarlab/gorengan/database"
-	"github.com/musobarlab/gorengan/graphql/resolver"
 	"github.com/musobarlab/gorengan/middleware"
-	"github.com/musobarlab/gorengan/modules/product/repository"
-	"github.com/musobarlab/gorengan/modules/product/usecase"
+	cd "github.com/musobarlab/gorengan/modules/category/delivery"
+	cr "github.com/musobarlab/gorengan/modules/category/repository"
+	cu "github.com/musobarlab/gorengan/modules/category/usecase"
+	pd "github.com/musobarlab/gorengan/modules/product/delivery"
+	pr "github.com/musobarlab/gorengan/modules/product/repository"
+	pu "github.com/musobarlab/gorengan/modules/product/usecase"
 	"github.com/musobarlab/gorengan/schema"
 )
+
+// embedding all graphql resolver/ handler anonymously
+type graphqlHandlers struct {
+	pd.GraphQLProductHandler
+	cd.GraphQLCategoryHandler
+}
 
 // EchoServer struct
 type EchoServer struct {
@@ -37,13 +46,22 @@ func NewEchoServer(port int) (*EchoServer, error) {
 		return nil, err
 	}
 
-	productRepository := repository.NewProductRepositoryGorm(db)
-	categoryRepository := repository.NewCategoryRepositoryGorm(db)
+	productRepository := pr.NewProductRepositoryGorm(db)
+	categoryRepository := cr.NewCategoryRepositoryGorm(db)
 
-	productUsecase := usecase.NewProductUsecaseImpl(productRepository, productRepository, categoryRepository)
-	categoryUsecase := usecase.NewCategoryUsecaseImpl(categoryRepository, categoryRepository)
+	productUsecase := pu.NewProductUsecaseImpl(productRepository, productRepository, categoryRepository)
+	categoryUsecase := cu.NewCategoryUsecaseImpl(categoryRepository, categoryRepository)
 
-	gqlSchema := graphql.MustParseSchema(graphqlSchema, &resolver.Resolver{ProductUsecase: productUsecase, CategoryUsecase: categoryUsecase})
+	productGraphQLHandler := pd.GraphQLProductHandler{ProductUsecase: productUsecase}
+	categoryGraphQLHandler := cd.GraphQLCategoryHandler{CategoryUsecase: categoryUsecase}
+
+	// create graphql resolver
+	var graphqlResolver graphqlHandlers
+
+	graphqlResolver.GraphQLProductHandler = productGraphQLHandler
+	graphqlResolver.GraphQLCategoryHandler = categoryGraphQLHandler
+
+	gqlSchema := graphql.MustParseSchema(graphqlSchema, &graphqlResolver)
 
 	graphQLHandler := &relay.Handler{Schema: gqlSchema}
 
