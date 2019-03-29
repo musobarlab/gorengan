@@ -1,6 +1,7 @@
 package mock
 
 import (
+	categoryDomain "github.com/musobarlab/gorengan/modules/category/domain"
 	"github.com/musobarlab/gorengan/modules/product/domain"
 	"github.com/musobarlab/gorengan/modules/shared"
 )
@@ -21,7 +22,7 @@ func (u *ProductUsecaseMock) CreateProduct(product *domain.Product) shared.Outpu
 		Name:       "Nokia 6",
 		Quantity:   6,
 		CategoryID: "1",
-		Category: domain.Category{
+		Category: categoryDomain.Category{
 			ID:   "1",
 			Name: "Smart Phone",
 		},
@@ -36,7 +37,7 @@ func (u *ProductUsecaseMock) RemoveProduct(id string) shared.Output {
 		Name:       "Nokia 6",
 		Quantity:   6,
 		CategoryID: "1",
-		Category: domain.Category{
+		Category: categoryDomain.Category{
 			ID:   "1",
 			Name: "Smart Phone",
 		},
@@ -51,7 +52,7 @@ func (u *ProductUsecaseMock) GetProduct(id string) shared.Output {
 		Name:       "Nokia 6",
 		Quantity:   6,
 		CategoryID: "1",
-		Category: domain.Category{
+		Category: categoryDomain.Category{
 			ID:   "1",
 			Name: "Smart Phone",
 		},
@@ -69,7 +70,7 @@ func (u *ProductUsecaseMock) GetAllProduct(params *shared.Parameters) shared.Out
 			Name:       "Nokia 6",
 			Quantity:   6,
 			CategoryID: "1",
-			Category: domain.Category{
+			Category: categoryDomain.Category{
 				ID:   "1",
 				Name: "Smart Phone",
 			},
@@ -79,7 +80,7 @@ func (u *ProductUsecaseMock) GetAllProduct(params *shared.Parameters) shared.Out
 			Name:       "Guitar Electric",
 			Quantity:   6,
 			CategoryID: "2",
-			Category: domain.Category{
+			Category: categoryDomain.Category{
 				ID:   "2",
 				Name: "Music",
 			},

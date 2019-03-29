@@ -3,6 +3,7 @@ package usecase
 import (
 	"testing"
 
+	categoryMock "github.com/musobarlab/gorengan/modules/category/repository/mock"
 	"github.com/musobarlab/gorengan/modules/product/domain"
 	productMock "github.com/musobarlab/gorengan/modules/product/repository/mock"
 	"github.com/musobarlab/gorengan/modules/shared"
@@ -14,7 +15,7 @@ func TestProductUsecase(t *testing.T) {
 
 	t.Run("should success test create product", func(t *testing.T) {
 		productRepositoryMock := productMock.NewProductRepositoryMock()
-		categoryRepositoryMock := productMock.NewCategoryRepositoryMock()
+		categoryRepositoryMock := categoryMock.NewCategoryRepositoryMock()
 
 		productUsecase := NewProductUsecaseImpl(productRepositoryMock, productRepositoryMock, categoryRepositoryMock)
 
@@ -27,7 +28,7 @@ func TestProductUsecase(t *testing.T) {
 
 	t.Run("should success test create product already exist", func(t *testing.T) {
 		productRepositoryMock := productMock.NewProductRepositoryMock()
-		categoryRepositoryMock := productMock.NewCategoryRepositoryMock()
+		categoryRepositoryMock := categoryMock.NewCategoryRepositoryMock()
 
 		productUsecase := NewProductUsecaseImpl(productRepositoryMock, productRepositoryMock, categoryRepositoryMock)
 
@@ -40,7 +41,7 @@ func TestProductUsecase(t *testing.T) {
 
 	t.Run("should error test create product when category not found", func(t *testing.T) {
 		productRepositoryMock := productMock.NewProductRepositoryMock()
-		categoryRepositoryMock := productMock.NewCategoryRepositoryMock()
+		categoryRepositoryMock := categoryMock.NewCategoryRepositoryMock()
 
 		productUsecase := NewProductUsecaseImpl(productRepositoryMock, productRepositoryMock, categoryRepositoryMock)
 
@@ -53,7 +54,7 @@ func TestProductUsecase(t *testing.T) {
 
 	t.Run("should success test remove product", func(t *testing.T) {
 		productRepositoryMock := productMock.NewProductRepositoryMock()
-		categoryRepositoryMock := productMock.NewCategoryRepositoryMock()
+		categoryRepositoryMock := categoryMock.NewCategoryRepositoryMock()
 
 		productUsecase := NewProductUsecaseImpl(productRepositoryMock, productRepositoryMock, categoryRepositoryMock)
 
@@ -71,7 +72,7 @@ func TestProductUsecase(t *testing.T) {
 
 	t.Run("should error test remove product when product not found", func(t *testing.T) {
 		productRepositoryMock := productMock.NewProductRepositoryMock()
-		categoryRepositoryMock := productMock.NewCategoryRepositoryMock()
+		categoryRepositoryMock := categoryMock.NewCategoryRepositoryMock()
 
 		productUsecase := NewProductUsecaseImpl(productRepositoryMock, productRepositoryMock, categoryRepositoryMock)
 
@@ -84,7 +85,7 @@ func TestProductUsecase(t *testing.T) {
 
 	t.Run("should success test get product", func(t *testing.T) {
 		productRepositoryMock := productMock.NewProductRepositoryMock()
-		categoryRepositoryMock := productMock.NewCategoryRepositoryMock()
+		categoryRepositoryMock := categoryMock.NewCategoryRepositoryMock()
 
 		productUsecase := NewProductUsecaseImpl(productRepositoryMock, productRepositoryMock, categoryRepositoryMock)
 
@@ -102,7 +103,7 @@ func TestProductUsecase(t *testing.T) {
 
 	t.Run("should error test get product when product get by not found ID", func(t *testing.T) {
 		productRepositoryMock := productMock.NewProductRepositoryMock()
-		categoryRepositoryMock := productMock.NewCategoryRepositoryMock()
+		categoryRepositoryMock := categoryMock.NewCategoryRepositoryMock()
 
 		productUsecase := NewProductUsecaseImpl(productRepositoryMock, productRepositoryMock, categoryRepositoryMock)
 
@@ -119,7 +120,7 @@ func TestProductUsecase(t *testing.T) {
 
 	t.Run("should success test get products", func(t *testing.T) {
 		productRepositoryMock := productMock.NewProductRepositoryMock()
-		categoryRepositoryMock := productMock.NewCategoryRepositoryMock()
+		categoryRepositoryMock := categoryMock.NewCategoryRepositoryMock()
 
 		productUsecase := NewProductUsecaseImpl(productRepositoryMock, productRepositoryMock, categoryRepositoryMock)
 

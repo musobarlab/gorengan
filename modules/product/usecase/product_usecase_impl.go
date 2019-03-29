@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/jinzhu/gorm"
+	categoryRepo "github.com/musobarlab/gorengan/modules/category/repository"
 	"github.com/musobarlab/gorengan/modules/product/domain"
 	"github.com/musobarlab/gorengan/modules/product/repository"
 	"github.com/musobarlab/gorengan/modules/shared"
@@ -16,12 +17,12 @@ import (
 type ProductUsecaseImpl struct {
 	productRepositoryRead  repository.ProductRepository
 	productRepositoryWrite repository.ProductRepository
-	categoryRepository     repository.CategoryRepository
+	categoryRepository     categoryRepo.CategoryRepository
 }
 
 // NewProductUsecaseImpl function
 func NewProductUsecaseImpl(productRepositoryRead, productRepositoryWrite repository.ProductRepository,
-	categoryRepository repository.CategoryRepository) *ProductUsecaseImpl {
+	categoryRepository categoryRepo.CategoryRepository) *ProductUsecaseImpl {
 	return &ProductUsecaseImpl{
 		productRepositoryRead:  productRepositoryRead,
 		productRepositoryWrite: productRepositoryWrite,

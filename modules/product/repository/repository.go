@@ -13,12 +13,3 @@ type ProductRepository interface {
 	FindAll(*shared.Parameters) shared.Output
 	Count(*shared.Parameters) shared.Output
 }
-
-// CategoryRepository interface
-type CategoryRepository interface {
-	Save(*domain.Category) shared.Output
-	Delete(*domain.Category) shared.Output
-	FindByID(string) shared.Output
-	FindAll(*shared.Parameters) shared.Output
-	Count(*shared.Parameters) shared.Output
-}

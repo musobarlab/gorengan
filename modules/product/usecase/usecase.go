@@ -13,9 +13,3 @@ type ProductUsecase interface {
 	GetTotalProduct(*shared.Parameters) shared.Output
 	RemoveProduct(string) shared.Output
 }
-
-// CategoryUsecase interface
-type CategoryUsecase interface {
-	CreateCategory(*domain.Category) shared.Output
-	GetCategory(string) shared.Output
-}

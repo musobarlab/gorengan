@@ -2,6 +2,7 @@ package mock
 
 import (
 	"github.com/jinzhu/gorm"
+	cd "github.com/musobarlab/gorengan/modules/category/domain"
 	"github.com/musobarlab/gorengan/modules/product/domain"
 	"github.com/musobarlab/gorengan/modules/shared"
 )
@@ -19,7 +20,7 @@ func NewProductRepositoryMock() *ProductRepositoryMock {
 		Name:       "Nokia 6",
 		Quantity:   6,
 		CategoryID: "1",
-		Category: domain.Category{
+		Category: cd.Category{
 			ID:   "1",
 			Name: "Smart Phone",
 		},
@@ -30,7 +31,7 @@ func NewProductRepositoryMock() *ProductRepositoryMock {
 		Name:       "Guitar Electric",
 		Quantity:   6,
 		CategoryID: "2",
-		Category: domain.Category{
+		Category: cd.Category{
 			ID:   "2",
 			Name: "Music",
 		},

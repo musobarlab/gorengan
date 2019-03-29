@@ -3,6 +3,7 @@ package domain
 import (
 	"errors"
 
+	categoryDomain "github.com/musobarlab/gorengan/modules/category/domain"
 	"github.com/musobarlab/gorengan/modules/shared"
 )
 
@@ -12,7 +13,7 @@ type Product struct {
 	Name       string `gorm:"column:NAME"`
 	Quantity   uint   `gorm:"column:QUANTITY"`
 	CategoryID string `gorm:"column:CATEGORY_ID"`
-	Category   Category
+	Category   categoryDomain.Category
 	shared.BaseDomain
 }
 
@@ -28,16 +29,8 @@ type Category struct {
 	shared.BaseDomain
 }
 
-// TableName function
-func (c Category) TableName() string {
-	return "PRODUCT_CATEGORIES"
-}
-
 // Products type list of Product
 type Products []*Product
-
-// Categories type list of Category
-type Categories []*Category
 
 // Validate function
 func (p *Product) Validate() error {
@@ -51,19 +44,6 @@ func (p *Product) Validate() error {
 
 	if len(p.CategoryID) <= 0 {
 		return errors.New("category id is required")
-	}
-
-	return nil
-}
-
-// Validate function
-func (c *Category) Validate() error {
-	if len(c.ID) <= 0 {
-		return errors.New("category id is required")
-	}
-
-	if len(c.Name) <= 0 {
-		return errors.New("category name is required")
 	}
 
 	return nil
