@@ -22,13 +22,6 @@ func (p Product) TableName() string {
 	return "PRODUCTS"
 }
 
-// Category struct
-type Category struct {
-	ID   string `gorm:"column:ID; primary_key:yes"`
-	Name string `gorm:"column:NAME"`
-	shared.BaseDomain
-}
-
 // Products type list of Product
 type Products []*Product
 
