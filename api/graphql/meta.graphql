@@ -1,0 +1,6 @@
+type Meta {
+    page: Int
+    limit: Int
+    totalRecords: Int
+    totalPages: Int
+}

@@ -1,0 +1,15 @@
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+type Mutation {
+    productMutation: ProductMutation
+    categoryMutation: CategoryMutation
+}
+
+type Query {
+    productQuery: ProductQuery
+}
+
+scalar Time

@@ -1,20 +1,16 @@
-schema {
-    query: Query
-    mutation: Mutation
-}
-
-type Query {
+type ProductQuery {
     product(id: ID!): Product
     products(productsArgs: ProductsArgs): Products
 }
 
-type Mutation {
-    createCategory(category: CategoryInput!): Category
+type ProductMutation {
     createProduct(product: ProductInput!): Product
     deleteProduct(id: ID!): Product
 }
 
-scalar Time
+type CategoryMutation {
+    createCategory(category: CategoryInput!): Category
+}
 
 input ProductsArgs {
     query: String
@@ -29,11 +25,11 @@ input ProductInput {
     name: String!
     quantity: Int!
     category: ID!
-    creatorId: String!
-    creatorIp: String!
+    creatorId: String
+    creatorIp: String
     created: Time
-    editorId: String!
-    editorIp: String!
+    editorId: String
+    editorIp: String
     lastModified: Time
     isDeleted: Boolean
     deleted: Time
@@ -42,11 +38,11 @@ input ProductInput {
 input CategoryInput {
     id: ID!
     name: String!
-    creatorId: String!
-    creatorIp: String!
+    creatorId: String
+    creatorIp: String
     created: Time
-    editorId: String!
-    editorIp: String!
+    editorId: String
+    editorIp: String
     lastModified: Time
     isDeleted: Boolean
     deleted: Time
@@ -83,11 +79,4 @@ type Category {
     lastModified: Time
     isDeleted: Boolean
     deleted: Time
-}
-
-type Meta {
-    page: Int
-    limit: Int
-    totalRecords: Int
-    totalPages: Int
 }
