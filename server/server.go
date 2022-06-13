@@ -6,6 +6,8 @@ import (
 
 	"github.com/graph-gophers/graphql-go"
 	"github.com/graph-gophers/graphql-go/relay"
+	otelgraphql "github.com/graph-gophers/graphql-go/trace/otel"
+
 	"github.com/labstack/echo"
 	echoMiddleware "github.com/labstack/echo/middleware"
 	"github.com/musobarlab/gorengan/config"
@@ -17,13 +19,34 @@ import (
 	pd "github.com/musobarlab/gorengan/modules/product/delivery"
 	pr "github.com/musobarlab/gorengan/modules/product/repository"
 	pu "github.com/musobarlab/gorengan/modules/product/usecase"
-	"github.com/musobarlab/gorengan/schema"
+	graphqlSchemaApi "github.com/musobarlab/gorengan/api/graphql"
 )
+
+type graphqlMutation struct {
+	product *pd.GraphQLProductMutationHandler
+	category *cd.GraphQLCategoryMutationHandler
+}
+
+type graphqlQuery struct {
+	product *pd.GraphQLProductQueryHandler
+}
+
+func (g graphqlQuery) ProductQuery() *pd.GraphQLProductQueryHandler {
+	return g.product
+}
+
+func (g graphqlMutation) ProductMutation() *pd.GraphQLProductMutationHandler {
+	return g.product
+}
+
+func (g graphqlMutation) CategoryMutation() *cd.GraphQLCategoryMutationHandler {
+	return g.category
+}
 
 // embedding all graphql resolver/ handler anonymously
 type graphqlHandlers struct {
-	pd.GraphQLProductHandler
-	cd.GraphQLCategoryHandler
+	graphqlMutation
+	graphqlQuery
 }
 
 // EchoServer struct
@@ -42,7 +65,7 @@ func NewEchoServer(port int) (*EchoServer, error) {
 	db.LogMode(true)
 
 	// load graphql schema file, and convert to string
-	graphqlSchema, err := schema.LoadGraphQLSchema()
+	graphqlSchema, err := graphqlSchemaApi.LoadGraphQLSchema()
 	if err != nil {
 		return nil, err
 	}
@@ -56,17 +79,27 @@ func NewEchoServer(port int) (*EchoServer, error) {
 	categoryUsecase := cu.NewCategoryUsecaseImpl(categoryRepository, categoryRepository)
 
 	// initial graphql handler/ resolver
-	productGraphQLHandler := pd.GraphQLProductHandler{ProductUsecase: productUsecase}
-	categoryGraphQLHandler := cd.GraphQLCategoryHandler{CategoryUsecase: categoryUsecase}
+	productGraphQLQueryHandler := &pd.GraphQLProductQueryHandler{ProductUsecase: productUsecase}
+	productGraphQLMutationHandler := &pd.GraphQLProductMutationHandler{ProductUsecase: productUsecase}
+	categoryGraphQLMutationHandler := &cd.GraphQLCategoryMutationHandler{CategoryUsecase: categoryUsecase}
 
 	// create graphql resolver
 	var graphqlResolver graphqlHandlers
 
-	graphqlResolver.GraphQLProductHandler = productGraphQLHandler
-	graphqlResolver.GraphQLCategoryHandler = categoryGraphQLHandler
+	graphqlResolver.graphqlMutation.product = productGraphQLMutationHandler
+	graphqlResolver.graphqlMutation.category = categoryGraphQLMutationHandler
+	graphqlResolver.graphqlQuery.product = productGraphQLQueryHandler
 
 	// parse grapqhql schema to code
-	gqlSchema := graphql.MustParseSchema(graphqlSchema, &graphqlResolver)
+	gqlSchema := graphql.MustParseSchema(
+		graphqlSchema, 
+		&graphqlResolver,
+		graphql.UseStringDescriptions(),
+		graphql.UseFieldResolvers(),
+
+		// tracing
+		graphql.Tracer(otelgraphql.DefaultTracer()),
+	)
 
 	graphQLHandler := &relay.Handler{Schema: gqlSchema}
 
