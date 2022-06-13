@@ -22,33 +22,6 @@ import (
 	graphqlSchemaApi "github.com/musobarlab/gorengan/api/graphql"
 )
 
-type graphqlMutation struct {
-	product *pd.GraphQLProductMutationHandler
-	category *cd.GraphQLCategoryMutationHandler
-}
-
-type graphqlQuery struct {
-	product *pd.GraphQLProductQueryHandler
-}
-
-func (g graphqlQuery) ProductQuery() *pd.GraphQLProductQueryHandler {
-	return g.product
-}
-
-func (g graphqlMutation) ProductMutation() *pd.GraphQLProductMutationHandler {
-	return g.product
-}
-
-func (g graphqlMutation) CategoryMutation() *cd.GraphQLCategoryMutationHandler {
-	return g.category
-}
-
-// embedding all graphql resolver/ handler anonymously
-type graphqlHandlers struct {
-	graphqlMutation
-	graphqlQuery
-}
-
 // EchoServer struct
 type EchoServer struct {
 	port           int
@@ -84,7 +57,7 @@ func NewEchoServer(port int) (*EchoServer, error) {
 	categoryGraphQLMutationHandler := &cd.GraphQLCategoryMutationHandler{CategoryUsecase: categoryUsecase}
 
 	// create graphql resolver
-	var graphqlResolver graphqlHandlers
+	var graphqlResolver graphqlResolver
 
 	graphqlResolver.graphqlMutation.product = productGraphQLMutationHandler
 	graphqlResolver.graphqlMutation.category = categoryGraphQLMutationHandler
