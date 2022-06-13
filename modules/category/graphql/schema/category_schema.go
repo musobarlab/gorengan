@@ -11,11 +11,11 @@ import (
 type CategorySchemaInput struct {
 	ID           string
 	Name         string
-	CreatorID    string
-	CreatorIP    string
+	CreatorID    *string
+	CreatorIP    *string
 	Created      *time.Time
-	EditorID     string
-	EditorIP     string
+	EditorID     *string
+	EditorIP     *string
 	LastModified *time.Time
 	IsDeleted    *bool
 	Deleted      *time.Time

@@ -13,7 +13,7 @@ func TestGraphQLHandler(t *testing.T) {
 	t.Run("should return success test mutation create category", func(t *testing.T) {
 		categoryUsecaseMock := usecaseMock.NewCategoryUsecaseMock()
 
-		handler := &GraphQLCategoryHandler{
+		handler := &GraphQLCategoryMutationHandler{
 			CategoryUsecase: categoryUsecaseMock,
 		}
 

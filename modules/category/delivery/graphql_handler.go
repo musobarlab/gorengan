@@ -9,9 +9,9 @@ import (
 	"golang.org/x/net/context"
 )
 
-// GraphQLCategoryHandler struct
+// GraphQLCategoryMutationHandler struct
 // Handler means Resolver
-type GraphQLCategoryHandler struct {
+type GraphQLCategoryMutationHandler struct {
 	CategoryUsecase usecase.CategoryUsecase
 }
 
@@ -21,7 +21,7 @@ type CategoryInputArgs struct {
 }
 
 // CreateCategory mutation
-func (r *GraphQLCategoryHandler) CreateCategory(ctx context.Context, args *CategoryInputArgs) (*schema.CategorySchema, error) {
+func (r *GraphQLCategoryMutationHandler) CreateCategory(ctx context.Context, args *CategoryInputArgs) (*schema.CategorySchema, error) {
 	var category domain.Category
 	category.ID = args.Category.ID
 	category.Name = args.Category.Name
