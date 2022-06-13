@@ -13,9 +13,15 @@ import (
 	"golang.org/x/net/context"
 )
 
-// GraphQLProductHandler struct
+// GraphQLProductQueryHandler struct
 // Handler means Resolver
-type GraphQLProductHandler struct {
+type GraphQLProductQueryHandler struct {
+	ProductUsecase usecase.ProductUsecase
+}
+
+// GraphQLProductQueryHandler struct
+// Handler means Resolver
+type GraphQLProductMutationHandler struct {
 	ProductUsecase usecase.ProductUsecase
 }
 
@@ -49,7 +55,7 @@ type ProductsQueryArgs struct {
 }
 
 // CreateProduct mutation
-func (r *GraphQLProductHandler) CreateProduct(ctx context.Context, args *ProductInputArgs) (*schema.ProductSchema, error) {
+func (r *GraphQLProductMutationHandler) CreateProduct(ctx context.Context, args *ProductInputArgs) (*schema.ProductSchema, error) {
 	var product domain.Product
 	product.ID = args.Product.ID
 	product.Name = args.Product.Name
@@ -69,7 +75,7 @@ func (r *GraphQLProductHandler) CreateProduct(ctx context.Context, args *Product
 }
 
 // DeleteProduct mutation
-func (r *GraphQLProductHandler) DeleteProduct(ctx context.Context, args *DeleteProductArgs) (*schema.ProductSchema, error) {
+func (r *GraphQLProductMutationHandler) DeleteProduct(ctx context.Context, args *DeleteProductArgs) (*schema.ProductSchema, error) {
 	output := r.ProductUsecase.RemoveProduct(string(args.ID))
 
 	if output.Err != nil {
@@ -82,7 +88,7 @@ func (r *GraphQLProductHandler) DeleteProduct(ctx context.Context, args *DeleteP
 }
 
 // Product Query function
-func (r *GraphQLProductHandler) Product(ctx context.Context, args *ProductQueryArgs) (*schema.ProductSchema, error) {
+func (r *GraphQLProductQueryHandler) Product(ctx context.Context, args *ProductQueryArgs) (*schema.ProductSchema, error) {
 	output := r.ProductUsecase.GetProduct(string(args.ID))
 
 	if output.Err != nil {
@@ -96,7 +102,7 @@ func (r *GraphQLProductHandler) Product(ctx context.Context, args *ProductQueryA
 }
 
 // Products Query function
-func (r *GraphQLProductHandler) Products(ctx context.Context, args *ProductsQueryArgs) (*schema.ProductListResolver, error) {
+func (r *GraphQLProductQueryHandler) Products(ctx context.Context, args *ProductsQueryArgs) (*schema.ProductListResolver, error) {
 	var (
 		params           shared.Parameters
 		productsResolver []*schema.ProductSchema

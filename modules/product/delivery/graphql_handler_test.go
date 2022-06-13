@@ -14,7 +14,7 @@ func TestGraphQLHandler(t *testing.T) {
 	t.Run("should return success test mutation create product", func(t *testing.T) {
 		productUsecaseMock := usecaseMock.NewProductUsecaseMock()
 
-		handler := &GraphQLProductHandler{
+		handler := &GraphQLProductMutationHandler{
 			ProductUsecase: productUsecaseMock,
 		}
 
@@ -44,7 +44,7 @@ func TestGraphQLHandler(t *testing.T) {
 	t.Run("should return success test mutation delete product", func(t *testing.T) {
 		productUsecaseMock := usecaseMock.NewProductUsecaseMock()
 
-		handler := &GraphQLProductHandler{
+		handler := &GraphQLProductMutationHandler{
 			ProductUsecase: productUsecaseMock,
 		}
 
@@ -65,7 +65,7 @@ func TestGraphQLHandler(t *testing.T) {
 	t.Run("should return success test query get product", func(t *testing.T) {
 		productUsecaseMock := usecaseMock.NewProductUsecaseMock()
 
-		handler := &GraphQLProductHandler{
+		handler := &GraphQLProductQueryHandler{
 			ProductUsecase: productUsecaseMock,
 		}
 
@@ -86,7 +86,7 @@ func TestGraphQLHandler(t *testing.T) {
 	t.Run("should return success test query get products", func(t *testing.T) {
 		productUsecaseMock := usecaseMock.NewProductUsecaseMock()
 
-		handler := &GraphQLProductHandler{
+		handler := &GraphQLProductQueryHandler{
 			ProductUsecase: productUsecaseMock,
 		}
 
