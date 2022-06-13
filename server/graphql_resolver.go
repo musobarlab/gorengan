@@ -4,8 +4,9 @@ import (
 	cd "github.com/musobarlab/gorengan/modules/category/delivery"
 	pd "github.com/musobarlab/gorengan/modules/product/delivery"
 )
+
 type graphqlMutation struct {
-	product *pd.GraphQLProductMutationHandler
+	product  *pd.GraphQLProductMutationHandler
 	category *cd.GraphQLCategoryMutationHandler
 }
 

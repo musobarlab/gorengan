@@ -5,29 +5,29 @@ import (
 	"log"
 	"net/http"
 
-	"gorm.io/gorm"
 	"github.com/graph-gophers/graphql-go"
 	"github.com/graph-gophers/graphql-go/relay"
 	otelgraphql "github.com/graph-gophers/graphql-go/trace/otel"
+	"gorm.io/gorm"
 
+	graphqlSchemaApi "github.com/musobarlab/gorengan/api/graphql"
 	"github.com/musobarlab/gorengan/config"
-	"github.com/musobarlab/gorengan/shared"
 	"github.com/musobarlab/gorengan/database"
-	"github.com/musobarlab/gorengan/server/middleware"
 	cd "github.com/musobarlab/gorengan/modules/category/delivery"
 	cr "github.com/musobarlab/gorengan/modules/category/repository"
 	cu "github.com/musobarlab/gorengan/modules/category/usecase"
 	pd "github.com/musobarlab/gorengan/modules/product/delivery"
 	pr "github.com/musobarlab/gorengan/modules/product/repository"
 	pu "github.com/musobarlab/gorengan/modules/product/usecase"
-	graphqlSchemaApi "github.com/musobarlab/gorengan/api/graphql"
+	"github.com/musobarlab/gorengan/server/middleware"
+	"github.com/musobarlab/gorengan/shared"
 )
 
 // HTTPServer struct
 type HTTPServer struct {
 	port           int
 	graphQLHandler *relay.Handler
-	db *gorm.DB
+	db             *gorm.DB
 }
 
 // NewHTTPServer echo server constructor
@@ -65,7 +65,7 @@ func NewHTTPServer(port int) (*HTTPServer, error) {
 
 	// parse grapqhql schema to code
 	gqlSchema := graphql.MustParseSchema(
-		graphqlSchema, 
+		graphqlSchema,
 		&graphqlResolver,
 		graphql.UseStringDescriptions(),
 		graphql.UseFieldResolvers(),
@@ -79,7 +79,7 @@ func NewHTTPServer(port int) (*HTTPServer, error) {
 	return &HTTPServer{
 		port:           port,
 		graphQLHandler: graphQLHandler,
-		db: db,
+		db:             db,
 	}, nil
 }
 
@@ -87,12 +87,12 @@ func NewHTTPServer(port int) (*HTTPServer, error) {
 func (s *HTTPServer) Run() {
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("/", func (w http.ResponseWriter, r *http.Request) {
-		shared.BuildJSONResponse(w, shared.Response[shared.EmptyJSON] {
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		shared.BuildJSONResponse(w, shared.Response[shared.EmptyJSON]{
 			Success: true,
-			Code: 200,
+			Code:    200,
 			Message: "server up and running",
-			Data: shared.EmptyJSON{},
+			Data:    shared.EmptyJSON{},
 		}, 200)
 	})
 

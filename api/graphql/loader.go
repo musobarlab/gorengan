@@ -7,9 +7,9 @@ import (
 
 const (
 	// GraphQLSchemaPath schema paths
-	GraphQLSchemaPath = "./api/graphql/graphql_schema.graphql"
+	GraphQLSchemaPath        = "./api/graphql/graphql_schema.graphql"
 	GraphQLProductSchemaPath = "./api/graphql/product.graphql"
-	GraphQLMetaSchemaPath = "./api/graphql/meta.graphql"
+	GraphQLMetaSchemaPath    = "./api/graphql/meta.graphql"
 )
 
 // LoadGraphQLSchema will read graphql schema from file
@@ -22,7 +22,7 @@ func LoadGraphQLSchema() (string, error) {
 	}
 
 	schemaBuilder.Write(graphqlMetaSchema)
-	
+
 	graphqlProductSchema, err := ioutil.ReadFile(GraphQLProductSchemaPath)
 	if err != nil {
 		return "", err

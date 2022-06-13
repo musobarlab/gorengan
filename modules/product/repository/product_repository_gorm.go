@@ -1,9 +1,9 @@
 package repository
 
 import (
-	"gorm.io/gorm"
 	"github.com/musobarlab/gorengan/modules/product/domain"
 	"github.com/musobarlab/gorengan/modules/shared"
+	"gorm.io/gorm"
 )
 
 // ProductRepositoryGorm struct

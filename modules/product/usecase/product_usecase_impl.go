@@ -6,11 +6,11 @@ import (
 	"strings"
 	"time"
 
-	"gorm.io/gorm"
 	categoryRepo "github.com/musobarlab/gorengan/modules/category/repository"
 	"github.com/musobarlab/gorengan/modules/product/domain"
 	"github.com/musobarlab/gorengan/modules/product/repository"
 	"github.com/musobarlab/gorengan/modules/shared"
+	"gorm.io/gorm"
 )
 
 // ProductUsecaseImpl struct

@@ -1,10 +1,10 @@
 package mock
 
 import (
-	"gorm.io/gorm"
 	cd "github.com/musobarlab/gorengan/modules/category/domain"
 	"github.com/musobarlab/gorengan/modules/product/domain"
 	"github.com/musobarlab/gorengan/modules/shared"
+	"gorm.io/gorm"
 )
 
 // ProductRepositoryMock struct

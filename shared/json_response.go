@@ -14,12 +14,12 @@ func BuildJSONResponse[T any](res http.ResponseWriter, resp T, httpCode int) {
 }
 
 // EmptyJSON type
-type EmptyJSON struct {}
+type EmptyJSON struct{}
 
 // Response type
 type Response[T any] struct {
-	Success bool 	`json:"success"`
-	Code    int		`json:"code"`
-	Message string	`json:"message"`
-	Data    T 		`json:"data,omitempty"`
+	Success bool   `json:"success"`
+	Code    int    `json:"code"`
+	Message string `json:"message"`
+	Data    T      `json:"data,omitempty"`
 }

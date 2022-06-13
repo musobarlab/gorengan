@@ -3,8 +3,8 @@ package database
 import (
 	"fmt"
 
-	"gorm.io/gorm"
 	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 // GetGormConn function
