@@ -8,8 +8,8 @@ import (
 	"github.com/graph-gophers/graphql-go/relay"
 	otelgraphql "github.com/graph-gophers/graphql-go/trace/otel"
 
-	"github.com/labstack/echo"
-	echoMiddleware "github.com/labstack/echo/middleware"
+	"github.com/labstack/echo/v4"
+	echoMiddleware "github.com/labstack/echo/v4/middleware"
 	"github.com/musobarlab/gorengan/config"
 	"github.com/musobarlab/gorengan/database"
 	"github.com/musobarlab/gorengan/middleware"
