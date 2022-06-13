@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/musobarlab/gorengan/config"
 	"github.com/musobarlab/gorengan/server"
@@ -22,5 +24,11 @@ func main() {
 		os.Exit(1)
 	}
 
-	s.Run()
+	go s.Run()
+
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, os.Interrupt, syscall.SIGTERM)
+	<-quit
+
+	s.Exit()
 }
