@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 
+	"gorm.io/gorm"
 	"github.com/graph-gophers/graphql-go"
 	"github.com/graph-gophers/graphql-go/relay"
 	otelgraphql "github.com/graph-gophers/graphql-go/trace/otel"
@@ -25,6 +26,7 @@ import (
 type HTTPServer struct {
 	port           int
 	graphQLHandler *relay.Handler
+	db *gorm.DB
 }
 
 // NewHTTPServer echo server constructor
@@ -33,8 +35,6 @@ func NewHTTPServer(port int) (*HTTPServer, error) {
 	if err != nil {
 		return nil, err
 	}
-
-	db.LogMode(true)
 
 	// load graphql schema file, and convert to string
 	graphqlSchema, err := graphqlSchemaApi.LoadGraphQLSchema()
@@ -78,6 +78,7 @@ func NewHTTPServer(port int) (*HTTPServer, error) {
 	return &HTTPServer{
 		port:           port,
 		graphQLHandler: graphQLHandler,
+		db: db,
 	}, nil
 }
 
@@ -99,4 +100,16 @@ func (s *HTTPServer) Run() {
 
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", s.port), mux))
 
+}
+
+func (s *HTTPServer) Exit() {
+	log.Print("exiting Http server\n")
+
+	db, err := s.db.DB()
+	if err != nil {
+		log.Printf("error loading DB %v\n", err)
+	}
+
+	log.Print("closing database\n")
+	db.Close()
 }

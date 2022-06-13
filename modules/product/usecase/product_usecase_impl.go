@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 	categoryRepo "github.com/musobarlab/gorengan/modules/category/repository"
 	"github.com/musobarlab/gorengan/modules/product/domain"
 	"github.com/musobarlab/gorengan/modules/product/repository"
@@ -164,7 +164,7 @@ func (u *ProductUsecaseImpl) GetTotalProduct(params *shared.Parameters) shared.O
 		return shared.Output{Err: productResult.Err}
 	}
 
-	totalProduct := productResult.Result.(int)
+	totalProduct := productResult.Result.(int64)
 
 	return shared.Output{Result: totalProduct}
 }

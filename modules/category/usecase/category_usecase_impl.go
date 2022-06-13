@@ -3,7 +3,7 @@ package usecase
 import (
 	"fmt"
 
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 	"github.com/musobarlab/gorengan/modules/category/domain"
 	"github.com/musobarlab/gorengan/modules/category/repository"
 	"github.com/musobarlab/gorengan/modules/shared"

@@ -162,7 +162,7 @@ func (r *GraphQLProductQueryHandler) Products(ctx context.Context, args *Product
 		return nil, countOutput.Err
 	}
 
-	total := countOutput.Result.(int)
+	total := countOutput.Result.(int64)
 
 	totalPage := int(math.Ceil(float64(total) / float64(params.Limit)))
 

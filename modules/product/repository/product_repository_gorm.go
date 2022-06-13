@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 	"github.com/musobarlab/gorengan/modules/product/domain"
 	"github.com/musobarlab/gorengan/modules/shared"
 )
@@ -68,7 +68,7 @@ func (r *ProductRepositoryGorm) FindAll(params *shared.Parameters) shared.Output
 
 // Count function
 func (r *ProductRepositoryGorm) Count(params *shared.Parameters) shared.Output {
-	var count int
+	var count int64
 
 	db := r.db.Model(&domain.Product{})
 

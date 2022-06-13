@@ -91,5 +91,5 @@ func (u *ProductUsecaseMock) GetAllProduct(params *shared.Parameters) shared.Out
 
 // GetTotalProduct function
 func (u *ProductUsecaseMock) GetTotalProduct(params *shared.Parameters) shared.Output {
-	return shared.Output{Result: 2}
+	return shared.Output{Result: int64(2)}
 }

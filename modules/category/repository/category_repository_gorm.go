@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 	"github.com/musobarlab/gorengan/modules/category/domain"
 	"github.com/musobarlab/gorengan/modules/shared"
 )
@@ -62,7 +62,7 @@ func (r *CategoryRepositoryGorm) FindAll(params *shared.Parameters) shared.Outpu
 
 // Count function
 func (r *CategoryRepositoryGorm) Count(params *shared.Parameters) shared.Output {
-	var count int
+	var count int64
 	err := r.db.Model(&domain.Category{}).Offset(params.Offset).Limit(params.Limit).Order(params.OrderBy).Count(&count).Error
 	if err != nil {
 		return shared.Output{Err: err}

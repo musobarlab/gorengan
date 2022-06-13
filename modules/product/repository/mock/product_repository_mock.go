@@ -1,7 +1,7 @@
 package mock
 
 import (
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 	cd "github.com/musobarlab/gorengan/modules/category/domain"
 	"github.com/musobarlab/gorengan/modules/product/domain"
 	"github.com/musobarlab/gorengan/modules/shared"
