@@ -11,11 +11,6 @@ Golang GraphQL Server Starter Kit
 $ git clone https://github.com/musobarlab/gorengan.git
 ```
 
-- Install `Glide` as a Package Manager https://glide.sh/
-- Install dependency
-```shell
-$ glide install
-```
 - Start database using `docker compose`
 ```shell
 $ docker-compose up
