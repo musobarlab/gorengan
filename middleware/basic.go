@@ -1,24 +1,45 @@
 package middleware
 
 import (
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
+	"encoding/base64"
+	"net/http"
+	"strings"
 )
 
-// BasicAuth function basic auth
-func BasicAuth(user, pass string) echo.MiddlewareFunc {
-	return middleware.BasicAuth(func(username, password string, c echo.Context) (bool, error) {
+type basicAuthconfig struct {
+	username string
+	password string
+}
 
-		validate := func(u, p string) bool {
-			if user == u && pass == p {
+func NewBasicAuthConfig(username, password string) *basicAuthconfig {
+	return &basicAuthconfig{username: username, password: password}
+}
+
+func BasicAuth(config *basicAuthconfig, next http.Handler) http.Handler {
+	return http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+
+		validate := func(username, password string) bool {
+			if config.username == username && config.password == password {
 				return true
 			}
 			return false
 		}
 
-		if validate(username, password) {
-			return true, nil
+		auth := strings.SplitN(req.Header.Get("Authorization"), " ", 2)
+
+		if len(auth) != 2 || auth[0] != "Basic" {
+			http.Error(res, "authorization failed", http.StatusUnauthorized)
+			return
 		}
-		return false, nil
+
+		payload, _ := base64.StdEncoding.DecodeString(auth[1])
+		pair := strings.SplitN(string(payload), ":", 2)
+
+		if len(pair) != 2 || !validate(pair[0], pair[1]) {
+			http.Error(res, "authorization failed", http.StatusUnauthorized)
+			return
+		}
+
+		next.ServeHTTP(res, req)
 	})
 }

@@ -2,14 +2,13 @@ package server
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/graph-gophers/graphql-go"
 	"github.com/graph-gophers/graphql-go/relay"
 	otelgraphql "github.com/graph-gophers/graphql-go/trace/otel"
 
-	"github.com/labstack/echo/v4"
-	echoMiddleware "github.com/labstack/echo/v4/middleware"
 	"github.com/musobarlab/gorengan/config"
 	"github.com/musobarlab/gorengan/database"
 	"github.com/musobarlab/gorengan/middleware"
@@ -22,14 +21,14 @@ import (
 	graphqlSchemaApi "github.com/musobarlab/gorengan/api/graphql"
 )
 
-// EchoServer struct
-type EchoServer struct {
+// HTTPServer struct
+type HTTPServer struct {
 	port           int
 	graphQLHandler *relay.Handler
 }
 
-// NewEchoServer echo server constructor
-func NewEchoServer(port int) (*EchoServer, error) {
+// NewHTTPServer echo server constructor
+func NewHTTPServer(port int) (*HTTPServer, error) {
 	db, err := database.GetGormConn(config.DBHost, config.DBUser, config.DBName, config.DBPassword, config.DBPort)
 	if err != nil {
 		return nil, err
@@ -76,24 +75,28 @@ func NewEchoServer(port int) (*EchoServer, error) {
 
 	graphQLHandler := &relay.Handler{Schema: gqlSchema}
 
-	return &EchoServer{
+	return &HTTPServer{
 		port:           port,
 		graphQLHandler: graphQLHandler,
 	}, nil
 }
 
 // Run function
-func (s *EchoServer) Run() {
-	e := echo.New()
-	e.Use(echoMiddleware.Logger())
+func (s *HTTPServer) Run() {
+	mux := http.NewServeMux()
 
-	e.GET("/", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Up and running !!")
+	mux.HandleFunc("/", func (w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("server up and running"))
 	})
 
 	// secure graphql route with Basic Auth
-	e.POST("/graphql", echo.WrapHandler(s.graphQLHandler), middleware.BasicAuth(config.BasicAuthUsername, config.BasicAuthPassword))
+	mux.Handle("/graphql", middleware.BasicAuth(
+		middleware.NewBasicAuthConfig(config.BasicAuthUsername, config.BasicAuthPassword),
+		s.graphQLHandler,
+	))
 
-	e.Logger.Fatal(e.Start(fmt.Sprintf(":%d", s.port)))
+	log.Printf("Http server running on port %d\n", s.port)
+
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", s.port), mux))
 
 }

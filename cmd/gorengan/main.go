@@ -16,7 +16,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	s, err := server.NewEchoServer(config.Port)
+	s, err := server.NewHTTPServer(config.Port)
 	if err != nil {
 		fmt.Println("port not specified")
 		os.Exit(1)
