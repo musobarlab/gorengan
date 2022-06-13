@@ -10,9 +10,11 @@ This endpoint is secured using `basic auth`, open the `.env` for details.
 payload
 ```javascript
 mutation($product: ProductInput!) {
-  createProduct(product: $product) {
-    id
-    name
+  productMutation {
+    createProduct(product: $product) {
+        id
+        name
+    }
   }
 }
 ```
@@ -22,7 +24,7 @@ arguments
 ```json
 {
   "product": {
-    "id": "2",
+    "id": "1",
     "name": "NOKIA 6",
     "category": "1",
     "quantity": 4
@@ -35,16 +37,18 @@ arguments
 payload
 ```javascript
 query {
-  product(id: "7") {
-    id
-    name
-    quantity
-    category {
-      id
-      name
+    productQuery {
+        product(id: "1") {
+            id
+            name
+            quantity
+            category {
+            id
+            name
+            }
+            created
+        }
     }
-    created
-  }
 }
 ```
 
@@ -52,23 +56,25 @@ query {
 
 payload
 ```javascript
-query($args: ProductsArgs) {
-  products(productsArgs: $args) {
-    products{
-      id
-      name
-      category{
-        id
-        name
-      }
+query ($args: ProductsArgs!) {
+    productQuery {
+        products(productsArgs: $args) {
+            products{
+                id
+                name
+                category{
+                    id
+                    name
+                }
+              }
+              meta{
+                page
+                limit
+                totalPages
+                totalRecords
+              }
+        }
     }
-    meta{
-      page
-      limit
-      totalPages
-      totalRecords
-    }
-  }
 }
 ```
 
@@ -89,10 +95,12 @@ arguments
 payload
 ```javascript
 mutation {
-  deleteProduct(id: "7") {
-    id
-    name
-  }
+    productMutation {
+        deleteProduct(id: "2") {
+            id
+            name
+        }
+    }
 }
 ```
 
@@ -101,10 +109,12 @@ mutation {
 payload
 ```javascript
 mutation($category: CategoryInput!) {
-  createCategory(category: $category) {
-    id
-    name
-  }
+    categoryMutation {
+        createCategory(category: $category) {
+            id
+            name
+        }
+    }
 }
 ```
 
