@@ -11,8 +11,9 @@ import (
 	otelgraphql "github.com/graph-gophers/graphql-go/trace/otel"
 
 	"github.com/musobarlab/gorengan/config"
+	"github.com/musobarlab/gorengan/shared"
 	"github.com/musobarlab/gorengan/database"
-	"github.com/musobarlab/gorengan/middleware"
+	"github.com/musobarlab/gorengan/server/middleware"
 	cd "github.com/musobarlab/gorengan/modules/category/delivery"
 	cr "github.com/musobarlab/gorengan/modules/category/repository"
 	cu "github.com/musobarlab/gorengan/modules/category/usecase"
@@ -87,7 +88,12 @@ func (s *HTTPServer) Run() {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/", func (w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("server up and running"))
+		shared.BuildJSONResponse(w, shared.Response[shared.EmptyJSON] {
+			Success: true,
+			Code: 200,
+			Message: "server up and running",
+			Data: shared.EmptyJSON{},
+		}, 200)
 	})
 
 	// secure graphql route with Basic Auth

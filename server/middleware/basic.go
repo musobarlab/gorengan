@@ -4,6 +4,8 @@ import (
 	"encoding/base64"
 	"net/http"
 	"strings"
+
+	"github.com/musobarlab/gorengan/shared"
 )
 
 type basicAuthconfig struct {
@@ -28,7 +30,12 @@ func BasicAuth(config *basicAuthconfig, next http.Handler) http.Handler {
 		auth := strings.SplitN(req.Header.Get("Authorization"), " ", 2)
 
 		if len(auth) != 2 || auth[0] != "Basic" {
-			http.Error(res, "authorization failed", http.StatusUnauthorized)
+			shared.BuildJSONResponse(res, shared.Response[shared.EmptyJSON] {
+				Success: false,
+				Code: http.StatusUnauthorized,
+				Message: "authorization failed",
+				Data: shared.EmptyJSON{},
+			}, http.StatusUnauthorized)
 			return
 		}
 
@@ -36,7 +43,12 @@ func BasicAuth(config *basicAuthconfig, next http.Handler) http.Handler {
 		pair := strings.SplitN(string(payload), ":", 2)
 
 		if len(pair) != 2 || !validate(pair[0], pair[1]) {
-			http.Error(res, "authorization failed", http.StatusUnauthorized)
+			shared.BuildJSONResponse(res, shared.Response[shared.EmptyJSON] {
+				Success: false,
+				Code: http.StatusUnauthorized,
+				Message: "authorization failed",
+				Data: shared.EmptyJSON{},
+			}, http.StatusUnauthorized)
 			return
 		}
 
