@@ -1,7 +1,7 @@
 package shared
 
 // Output struct
-type Output struct {
-	Result interface{}
+type Output[R any] struct {
+	Result R
 	Err    error
 }
