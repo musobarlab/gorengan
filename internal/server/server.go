@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"reflect"
 
 	"github.com/graph-gophers/graphql-go"
 	"github.com/graph-gophers/graphql-go/relay"
@@ -56,17 +57,35 @@ func NewHTTPServer(port int) (*HTTPServer, error) {
 	productGraphQLMutationHandler := &pd.GraphQLProductMutationHandler{ProductUsecase: productUsecase}
 	categoryGraphQLMutationHandler := &cd.GraphQLCategoryMutationHandler{CategoryUsecase: categoryUsecase}
 
-	// create graphql resolver
-	var graphqlResolver graphqlResolver
+	// load schema and resolver
+	var resolverFields []reflect.StructField
 
-	graphqlResolver.graphqlMutation.product = productGraphQLMutationHandler
-	graphqlResolver.graphqlMutation.category = categoryGraphQLMutationHandler
-	graphqlResolver.graphqlQuery.product = productGraphQLQueryHandler
+	resolverModules := make(map[string]interface{})
+	resolverModules[productGraphQLMutationHandler.Name()] = productGraphQLMutationHandler
+	resolverModules[categoryGraphQLMutationHandler.Name()] = categoryGraphQLMutationHandler
+	resolverModules[productGraphQLQueryHandler.Name()] = productGraphQLQueryHandler
+
+	for name, handler := range resolverModules {
+		resolverFields = append(resolverFields, reflect.StructField{
+			Name: name,
+			Type: reflect.TypeOf(handler),
+		})
+	}
+
+	resolverVal := reflect.New(reflect.StructOf(resolverFields)).Elem()
+	for k, v := range resolverModules {
+		val := resolverVal.FieldByName(k)
+		val.Set(reflect.ValueOf(v))
+	}
+
+	resolver := resolverVal.Addr().Interface()
+
+	// end load schema and resolver
 
 	// parse grapqhql schema to code
 	gqlSchema := graphql.MustParseSchema(
 		graphqlSchema,
-		&graphqlResolver,
+		resolver,
 		graphql.UseStringDescriptions(),
 		graphql.UseFieldResolvers(),
 

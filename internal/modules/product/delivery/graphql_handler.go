@@ -25,6 +25,16 @@ type GraphQLProductMutationHandler struct {
 	ProductUsecase usecase.ProductUsecase
 }
 
+// Name will return handler name
+func (r *GraphQLProductMutationHandler) Name() string {
+	return "ProductMutation"
+}
+
+// Name will return handler name
+func (r *GraphQLProductQueryHandler) Name() string {
+	return "ProductQuery"
+}
+
 // ProductInputArgs input
 type ProductInputArgs struct {
 	Product schema.ProductSchemaInput

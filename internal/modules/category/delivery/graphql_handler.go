@@ -37,3 +37,8 @@ func (r *GraphQLCategoryMutationHandler) CreateCategory(ctx context.Context, arg
 
 	return &schema.CategorySchema{Category: categorySaved}, nil
 }
+
+// Name will return handler name
+func (r *GraphQLCategoryMutationHandler) Name() string {
+	return "CategoryMutation"
+}
