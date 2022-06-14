@@ -7,9 +7,9 @@ import (
 
 // CategoryRepository interface
 type CategoryRepository interface {
-	Save(*domain.Category) shared.Output
-	Delete(*domain.Category) shared.Output
-	FindByID(string) shared.Output
-	FindAll(*shared.Parameters) shared.Output
-	Count(*shared.Parameters) shared.Output
+	Save(*domain.Category) shared.Output[*domain.Category]
+	Delete(*domain.Category) shared.Output[*domain.Category]
+	FindByID(string) shared.Output[*domain.Category]
+	FindAll(*shared.Parameters) shared.Output[domain.Categories]
+	Count(*shared.Parameters) shared.Output[int64]
 }

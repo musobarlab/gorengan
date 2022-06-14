@@ -69,7 +69,7 @@ func (r *GraphQLProductMutationHandler) CreateProduct(ctx context.Context, args 
 		return nil, output.Err
 	}
 
-	productSaved := output.Result.(*domain.Product)
+	productSaved := output.Result
 
 	return &schema.ProductSchema{Product: productSaved}, nil
 }
@@ -82,7 +82,7 @@ func (r *GraphQLProductMutationHandler) DeleteProduct(ctx context.Context, args 
 		return nil, output.Err
 	}
 
-	product := output.Result.(*domain.Product)
+	product := output.Result
 
 	return &schema.ProductSchema{Product: product}, nil
 }
@@ -95,7 +95,7 @@ func (r *GraphQLProductQueryHandler) Product(ctx context.Context, args *ProductQ
 		return nil, output.Err
 	}
 
-	product := output.Result.(*domain.Product)
+	product := output.Result
 
 	return &schema.ProductSchema{Product: product}, nil
 
@@ -133,7 +133,7 @@ func (r *GraphQLProductQueryHandler) Products(ctx context.Context, args *Product
 		return nil, productsOutput.Err
 	}
 
-	products := productsOutput.Result.(domain.Products)
+	products := productsOutput.Result
 
 	if len(products) <= 0 {
 		limitInt32 := int32(params.Limit)
@@ -162,7 +162,7 @@ func (r *GraphQLProductQueryHandler) Products(ctx context.Context, args *Product
 		return nil, countOutput.Err
 	}
 
-	total := countOutput.Result.(int64)
+	total := countOutput.Result
 
 	totalPage := int(math.Ceil(float64(total) / float64(params.Limit)))
 

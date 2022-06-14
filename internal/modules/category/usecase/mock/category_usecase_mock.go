@@ -15,20 +15,20 @@ func NewCategoryUsecaseMock() *CategoryUsecaseMock {
 }
 
 // CreateCategory function
-func (u *CategoryUsecaseMock) CreateCategory(category *domain.Category) shared.Output {
+func (u *CategoryUsecaseMock) CreateCategory(category *domain.Category) shared.Output[*domain.Category] {
 	categorySaved := &domain.Category{
 		ID:   "1",
 		Name: "Smart Phone",
 	}
-	return shared.Output{Result: categorySaved}
+	return shared.Output[*domain.Category]{Result: categorySaved}
 }
 
 // GetCategory function
-func (u *CategoryUsecaseMock) GetCategory(id string) shared.Output {
+func (u *CategoryUsecaseMock) GetCategory(id string) shared.Output[*domain.Category] {
 	categoryExist := &domain.Category{
 		ID:   "1",
 		Name: "Smart Phone",
 	}
 
-	return shared.Output{Result: categoryExist}
+	return shared.Output[*domain.Category]{Result: categoryExist}
 }

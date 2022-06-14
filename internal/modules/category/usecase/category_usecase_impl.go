@@ -21,44 +21,44 @@ func NewCategoryUsecaseImpl(categoryRepositoryRead, categoryRepositoryWrite repo
 }
 
 // CreateCategory function
-func (u *CategoryUsecaseImpl) CreateCategory(category *domain.Category) shared.Output {
+func (u *CategoryUsecaseImpl) CreateCategory(category *domain.Category) shared.Output[*domain.Category] {
 	categoryOutput := u.categoryRepositoryRead.FindByID(category.ID)
 	if categoryOutput.Err != nil && categoryOutput.Err != gorm.ErrRecordNotFound {
-		return shared.Output{Err: categoryOutput.Err}
+		return shared.Output[*domain.Category]{Err: categoryOutput.Err}
 	}
 
 	if categoryOutput.Result != nil {
-		categoryExist := categoryOutput.Result.(*domain.Category)
+		categoryExist := categoryOutput.Result
 
 		if categoryExist != nil {
-			return shared.Output{Err: fmt.Errorf("category with id %s already exist", category.ID)}
+			return shared.Output[*domain.Category]{Err: fmt.Errorf("category with id %s already exist", category.ID)}
 		}
 	}
 
 	err := category.Validate()
 
 	if err != nil {
-		return shared.Output{Err: err}
+		return shared.Output[*domain.Category]{Err: err}
 	}
 
 	categorySaveOutput := u.categoryRepositoryWrite.Save(category)
 	if categorySaveOutput.Err != nil {
-		return shared.Output{Err: categorySaveOutput.Err}
+		return shared.Output[*domain.Category]{Err: categorySaveOutput.Err}
 	}
 
-	categorySaved := categorySaveOutput.Result.(*domain.Category)
+	categorySaved := categorySaveOutput.Result
 
-	return shared.Output{Result: categorySaved}
+	return shared.Output[*domain.Category]{Result: categorySaved}
 }
 
 // GetCategory function
-func (u *CategoryUsecaseImpl) GetCategory(id string) shared.Output {
+func (u *CategoryUsecaseImpl) GetCategory(id string) shared.Output[*domain.Category] {
 	categoryOutput := u.categoryRepositoryRead.FindByID(id)
 	if categoryOutput.Err != nil && categoryOutput.Err != gorm.ErrRecordNotFound {
-		return shared.Output{Err: categoryOutput.Err}
+		return shared.Output[*domain.Category]{Err: categoryOutput.Err}
 	}
 
-	categoryExist := categoryOutput.Result.(*domain.Category)
+	categoryExist := categoryOutput.Result
 
-	return shared.Output{Result: categoryExist}
+	return shared.Output[*domain.Category]{Result: categoryExist}
 }

@@ -7,9 +7,9 @@ import (
 
 // ProductUsecase interface
 type ProductUsecase interface {
-	CreateProduct(*domain.Product) shared.Output
-	GetProduct(string) shared.Output
-	GetAllProduct(*shared.Parameters) shared.Output
-	GetTotalProduct(*shared.Parameters) shared.Output
-	RemoveProduct(string) shared.Output
+	CreateProduct(*domain.Product) shared.Output[*domain.Product]
+	GetProduct(string) shared.Output[*domain.Product]
+	GetAllProduct(*shared.Parameters) shared.Output[domain.Products]
+	GetTotalProduct(*shared.Parameters) shared.Output[int64]
+	RemoveProduct(string) shared.Output[*domain.Product]
 }

@@ -40,42 +40,42 @@ func NewProductRepositoryMock() *ProductRepositoryMock {
 }
 
 // Save function
-func (r *ProductRepositoryMock) Save(product *domain.Product) shared.Output {
+func (r *ProductRepositoryMock) Save(product *domain.Product) shared.Output[*domain.Product] {
 	r.db[product.ID] = product
-	return shared.Output{Result: product}
+	return shared.Output[*domain.Product]{Result: product}
 }
 
 // Delete function
-func (r *ProductRepositoryMock) Delete(product *domain.Product) shared.Output {
+func (r *ProductRepositoryMock) Delete(product *domain.Product) shared.Output[*domain.Product] {
 	product, ok := r.db[product.ID]
 	if !ok {
-		return shared.Output{Err: gorm.ErrRecordNotFound}
+		return shared.Output[*domain.Product]{Err: gorm.ErrRecordNotFound}
 	}
 
 	delete(r.db, product.ID)
-	return shared.Output{Result: product}
+	return shared.Output[*domain.Product]{Result: product}
 }
 
 // FindByID function
-func (r *ProductRepositoryMock) FindByID(id string) shared.Output {
+func (r *ProductRepositoryMock) FindByID(id string) shared.Output[*domain.Product] {
 	product, ok := r.db[id]
 	if !ok {
-		return shared.Output{Err: gorm.ErrRecordNotFound}
+		return shared.Output[*domain.Product]{Err: gorm.ErrRecordNotFound}
 	}
 
-	return shared.Output{Result: product}
+	return shared.Output[*domain.Product]{Result: product}
 }
 
 // FindAll function
-func (r *ProductRepositoryMock) FindAll(params *shared.Parameters) shared.Output {
+func (r *ProductRepositoryMock) FindAll(params *shared.Parameters) shared.Output[domain.Products] {
 	var products domain.Products
 	for _, product := range r.db {
 		products = append(products, product)
 	}
-	return shared.Output{Result: products}
+	return shared.Output[domain.Products]{Result: products}
 }
 
 // Count function
-func (r *ProductRepositoryMock) Count(params *shared.Parameters) shared.Output {
-	return shared.Output{Result: len(r.db)}
+func (r *ProductRepositoryMock) Count(params *shared.Parameters) shared.Output[int64] {
+	return shared.Output[int64]{Result: int64(len(r.db))}
 }

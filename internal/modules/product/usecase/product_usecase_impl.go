@@ -31,52 +31,52 @@ func NewProductUsecaseImpl(productRepositoryRead, productRepositoryWrite reposit
 }
 
 // CreateProduct function
-func (u *ProductUsecaseImpl) CreateProduct(product *domain.Product) shared.Output {
+func (u *ProductUsecaseImpl) CreateProduct(product *domain.Product) shared.Output[*domain.Product] {
 	productOutput := u.productRepositoryRead.FindByID(product.ID)
 	if productOutput.Err != nil && productOutput.Err != gorm.ErrRecordNotFound {
-		return shared.Output{Err: productOutput.Err}
+		return shared.Output[*domain.Product]{Err: productOutput.Err}
 	}
 
 	if productOutput.Result != nil {
-		productExist := productOutput.Result.(*domain.Product)
+		productExist := productOutput.Result
 
 		if productExist != nil {
-			return shared.Output{Err: fmt.Errorf("product with id %s already exist", product.ID)}
+			return shared.Output[*domain.Product]{Err: fmt.Errorf("product with id %s already exist", product.ID)}
 		}
 	}
 
 	categoryOutput := u.categoryRepository.FindByID(product.CategoryID)
 	if categoryOutput.Err != nil {
 		if categoryOutput.Err == gorm.ErrRecordNotFound {
-			return shared.Output{Err: fmt.Errorf("category with id %s not found", product.CategoryID)}
+			return shared.Output[*domain.Product]{Err: fmt.Errorf("category with id %s not found", product.CategoryID)}
 		}
-		return shared.Output{Err: productOutput.Err}
+		return shared.Output[*domain.Product]{Err: productOutput.Err}
 	}
 
 	err := product.Validate()
 
 	if err != nil {
-		return shared.Output{Err: err}
+		return shared.Output[*domain.Product]{Err: err}
 	}
 
 	productSaveOutput := u.productRepositoryWrite.Save(product)
 	if productSaveOutput.Err != nil {
-		return shared.Output{Err: productSaveOutput.Err}
+		return shared.Output[*domain.Product]{Err: productSaveOutput.Err}
 	}
 
-	productSaved := productSaveOutput.Result.(*domain.Product)
+	productSaved := productSaveOutput.Result
 
-	return shared.Output{Result: productSaved}
+	return shared.Output[*domain.Product]{Result: productSaved}
 }
 
 // RemoveProduct function
-func (u *ProductUsecaseImpl) RemoveProduct(id string) shared.Output {
+func (u *ProductUsecaseImpl) RemoveProduct(id string) shared.Output[*domain.Product] {
 	productResult := u.productRepositoryRead.FindByID(id)
 	if productResult.Err != nil {
-		return shared.Output{Err: productResult.Err}
+		return shared.Output[*domain.Product]{Err: productResult.Err}
 	}
 
-	product := productResult.Result.(*domain.Product)
+	product := productResult.Result
 
 	// set flag as deleted
 	product.IsDeleted = true
@@ -84,33 +84,33 @@ func (u *ProductUsecaseImpl) RemoveProduct(id string) shared.Output {
 
 	productSaveOutput := u.productRepositoryWrite.Save(product)
 	if productSaveOutput.Err != nil {
-		return shared.Output{Err: productSaveOutput.Err}
+		return shared.Output[*domain.Product]{Err: productSaveOutput.Err}
 	}
 
-	productSaved := productSaveOutput.Result.(*domain.Product)
-	return shared.Output{Result: productSaved}
+	productSaved := productSaveOutput.Result
+	return shared.Output[*domain.Product]{Result: productSaved}
 }
 
 // GetProduct function
-func (u *ProductUsecaseImpl) GetProduct(id string) shared.Output {
+func (u *ProductUsecaseImpl) GetProduct(id string) shared.Output[*domain.Product] {
 	productResult := u.productRepositoryRead.FindByID(id)
 	if productResult.Err != nil {
-		return shared.Output{Err: productResult.Err}
+		return shared.Output[*domain.Product]{Err: productResult.Err}
 	}
 
-	product := productResult.Result.(*domain.Product)
+	product := productResult.Result
 
-	return shared.Output{Result: product}
+	return shared.Output[*domain.Product]{Result: product}
 }
 
 // GetAllProduct function
-func (u *ProductUsecaseImpl) GetAllProduct(params *shared.Parameters) shared.Output {
+func (u *ProductUsecaseImpl) GetAllProduct(params *shared.Parameters) shared.Output[domain.Products] {
 	params.Page = 1
 
 	if len(params.StrPage) > 0 {
 		page, err := strconv.Atoi(params.StrPage)
 		if err != nil {
-			return shared.Output{Err: shared.NewErrorAllowNumericOnly("page")}
+			return shared.Output[domain.Products]{Err: shared.NewErrorAllowNumericOnly("page")}
 		}
 
 		params.Page = page
@@ -120,7 +120,7 @@ func (u *ProductUsecaseImpl) GetAllProduct(params *shared.Parameters) shared.Out
 	if len(params.StrLimit) > 0 {
 		limit, err := strconv.Atoi(params.StrLimit)
 		if err != nil {
-			return shared.Output{Err: shared.NewErrorAllowNumericOnly("limit")}
+			return shared.Output[domain.Products]{Err: shared.NewErrorAllowNumericOnly("limit")}
 		}
 
 		params.Limit = limit
@@ -130,7 +130,7 @@ func (u *ProductUsecaseImpl) GetAllProduct(params *shared.Parameters) shared.Out
 
 	if len(params.OrderBy) > 0 {
 		if !shared.StringInSlice(params.OrderBy, shared.AllowedSortFields) {
-			return shared.Output{Err: fmt.Errorf(shared.ErrorParameterInvalid, "order by")}
+			return shared.Output[domain.Products]{Err: fmt.Errorf(shared.ErrorParameterInvalid, "order by")}
 		}
 	} else {
 		params.OrderBy = "name"
@@ -138,7 +138,7 @@ func (u *ProductUsecaseImpl) GetAllProduct(params *shared.Parameters) shared.Out
 
 	if len(params.Sort) > 0 {
 		if !shared.StringInSlice(params.Sort, []string{"asc", "desc"}) {
-			return shared.Output{Err: fmt.Errorf("parameter %s allow input asc and desc only", "sort")}
+			return shared.Output[domain.Products]{Err: fmt.Errorf("parameter %s allow input asc and desc only", "sort")}
 
 		}
 	} else {
@@ -149,22 +149,22 @@ func (u *ProductUsecaseImpl) GetAllProduct(params *shared.Parameters) shared.Out
 
 	productResult := u.productRepositoryRead.FindAll(params)
 	if productResult.Err != nil {
-		return shared.Output{Err: productResult.Err}
+		return shared.Output[domain.Products]{Err: productResult.Err}
 	}
 
-	products := productResult.Result.(domain.Products)
+	products := productResult.Result
 
-	return shared.Output{Result: products}
+	return shared.Output[domain.Products]{Result: products}
 }
 
 // GetTotalProduct function
-func (u *ProductUsecaseImpl) GetTotalProduct(params *shared.Parameters) shared.Output {
+func (u *ProductUsecaseImpl) GetTotalProduct(params *shared.Parameters) shared.Output[int64] {
 	productResult := u.productRepositoryRead.Count(params)
 	if productResult.Err != nil {
-		return shared.Output{Err: productResult.Err}
+		return shared.Output[int64]{Err: productResult.Err}
 	}
 
-	totalProduct := productResult.Result.(int64)
+	totalProduct := productResult.Result
 
-	return shared.Output{Result: totalProduct}
+	return shared.Output[int64]{Result: totalProduct}
 }

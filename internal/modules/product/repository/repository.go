@@ -7,9 +7,9 @@ import (
 
 // ProductRepository interface
 type ProductRepository interface {
-	Save(*domain.Product) shared.Output
-	Delete(*domain.Product) shared.Output
-	FindByID(string) shared.Output
-	FindAll(*shared.Parameters) shared.Output
-	Count(*shared.Parameters) shared.Output
+	Save(*domain.Product) shared.Output[*domain.Product]
+	Delete(*domain.Product) shared.Output[*domain.Product]
+	FindByID(string) shared.Output[*domain.Product]
+	FindAll(*shared.Parameters) shared.Output[domain.Products]
+	Count(*shared.Parameters) shared.Output[int64]
 }

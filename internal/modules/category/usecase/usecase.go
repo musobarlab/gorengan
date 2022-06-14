@@ -7,6 +7,6 @@ import (
 
 // CategoryUsecase interface
 type CategoryUsecase interface {
-	CreateCategory(*domain.Category) shared.Output
-	GetCategory(string) shared.Output
+	CreateCategory(*domain.Category) shared.Output[*domain.Category]
+	GetCategory(string) shared.Output[*domain.Category]
 }

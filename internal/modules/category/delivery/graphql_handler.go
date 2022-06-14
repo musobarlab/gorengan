@@ -33,7 +33,7 @@ func (r *GraphQLCategoryMutationHandler) CreateCategory(ctx context.Context, arg
 		return nil, output.Err
 	}
 
-	categorySaved := output.Result.(*domain.Category)
+	categorySaved := output.Result
 
 	return &schema.CategorySchema{Category: categorySaved}, nil
 }

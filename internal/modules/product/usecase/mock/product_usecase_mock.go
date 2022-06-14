@@ -16,7 +16,7 @@ func NewProductUsecaseMock() *ProductUsecaseMock {
 }
 
 // CreateProduct function
-func (u *ProductUsecaseMock) CreateProduct(product *domain.Product) shared.Output {
+func (u *ProductUsecaseMock) CreateProduct(product *domain.Product) shared.Output[*domain.Product] {
 	productSaved := &domain.Product{
 		ID:         "1",
 		Name:       "Nokia 6",
@@ -27,11 +27,11 @@ func (u *ProductUsecaseMock) CreateProduct(product *domain.Product) shared.Outpu
 			Name: "Smart Phone",
 		},
 	}
-	return shared.Output{Result: productSaved}
+	return shared.Output[*domain.Product]{Result: productSaved}
 }
 
 // RemoveProduct function
-func (u *ProductUsecaseMock) RemoveProduct(id string) shared.Output {
+func (u *ProductUsecaseMock) RemoveProduct(id string) shared.Output[*domain.Product] {
 	productSaved := &domain.Product{
 		ID:         "1",
 		Name:       "Nokia 6",
@@ -42,11 +42,11 @@ func (u *ProductUsecaseMock) RemoveProduct(id string) shared.Output {
 			Name: "Smart Phone",
 		},
 	}
-	return shared.Output{Result: productSaved}
+	return shared.Output[*domain.Product]{Result: productSaved}
 }
 
 // GetProduct function
-func (u *ProductUsecaseMock) GetProduct(id string) shared.Output {
+func (u *ProductUsecaseMock) GetProduct(id string) shared.Output[*domain.Product] {
 	product := &domain.Product{
 		ID:         "1",
 		Name:       "Nokia 6",
@@ -58,11 +58,11 @@ func (u *ProductUsecaseMock) GetProduct(id string) shared.Output {
 		},
 	}
 
-	return shared.Output{Result: product}
+	return shared.Output[*domain.Product]{Result: product}
 }
 
 // GetAllProduct function
-func (u *ProductUsecaseMock) GetAllProduct(params *shared.Parameters) shared.Output {
+func (u *ProductUsecaseMock) GetAllProduct(params *shared.Parameters) shared.Output[domain.Products] {
 
 	products := domain.Products{
 		&domain.Product{
@@ -86,10 +86,10 @@ func (u *ProductUsecaseMock) GetAllProduct(params *shared.Parameters) shared.Out
 			},
 		},
 	}
-	return shared.Output{Result: products}
+	return shared.Output[domain.Products]{Result: products}
 }
 
 // GetTotalProduct function
-func (u *ProductUsecaseMock) GetTotalProduct(params *shared.Parameters) shared.Output {
-	return shared.Output{Result: int64(2)}
+func (u *ProductUsecaseMock) GetTotalProduct(params *shared.Parameters) shared.Output[int64] {
+	return shared.Output[int64]{Result: int64(2)}
 }

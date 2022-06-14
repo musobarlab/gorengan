@@ -64,7 +64,7 @@ func TestProductUsecase(t *testing.T) {
 			t.Errorf("remove product should return success")
 		}
 
-		productDeleted := output.Result.(*domain.Product)
+		productDeleted := output.Result
 		if !productDeleted.IsDeleted {
 			t.Errorf("product should set is delete to true after deleting")
 		}
@@ -95,7 +95,7 @@ func TestProductUsecase(t *testing.T) {
 			t.Errorf("get product should return success")
 		}
 
-		product := output.Result.(*domain.Product)
+		product := output.Result
 		if product.ID != "1" {
 			t.Errorf("get product should return product with ID 1")
 		}
@@ -130,7 +130,7 @@ func TestProductUsecase(t *testing.T) {
 			t.Errorf("get product should return success")
 		}
 
-		products := output.Result.(domain.Products)
+		products := output.Result
 
 		if len(products) <= 0 {
 			t.Errorf("get products list with lenght greater than 0")

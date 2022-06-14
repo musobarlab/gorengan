@@ -17,39 +17,39 @@ func NewProductRepositoryGorm(db *gorm.DB) *ProductRepositoryGorm {
 }
 
 // Save function
-func (r *ProductRepositoryGorm) Save(product *domain.Product) shared.Output {
+func (r *ProductRepositoryGorm) Save(product *domain.Product) shared.Output[*domain.Product] {
 	err := r.db.Save(product).Error
 	if err != nil {
-		return shared.Output{Err: err}
+		return shared.Output[*domain.Product]{Err: err}
 	}
 
-	return shared.Output{Result: product}
+	return shared.Output[*domain.Product]{Result: product}
 }
 
 // Delete function
-func (r *ProductRepositoryGorm) Delete(product *domain.Product) shared.Output {
+func (r *ProductRepositoryGorm) Delete(product *domain.Product) shared.Output[*domain.Product] {
 	err := r.db.Delete(product).Error
 	if err != nil {
-		return shared.Output{Err: err}
+		return shared.Output[*domain.Product]{Err: err}
 	}
 
-	return shared.Output{Result: product}
+	return shared.Output[*domain.Product]{Result: product}
 }
 
 // FindByID function
-func (r *ProductRepositoryGorm) FindByID(id string) shared.Output {
+func (r *ProductRepositoryGorm) FindByID(id string) shared.Output[*domain.Product] {
 	var product domain.Product
 
 	err := r.db.Preload("Category").Where(&domain.Product{ID: id}).Take(&product).Error
 	if err != nil {
-		return shared.Output{Err: err}
+		return shared.Output[*domain.Product]{Err: err}
 	}
 
-	return shared.Output{Result: &product}
+	return shared.Output[*domain.Product]{Result: &product}
 }
 
 // FindAll function
-func (r *ProductRepositoryGorm) FindAll(params *shared.Parameters) shared.Output {
+func (r *ProductRepositoryGorm) FindAll(params *shared.Parameters) shared.Output[domain.Products] {
 	var products domain.Products
 
 	db := r.db.Preload("Category").Offset(params.Offset).Limit(params.Limit)
@@ -60,14 +60,14 @@ func (r *ProductRepositoryGorm) FindAll(params *shared.Parameters) shared.Output
 
 	err := db.Find(&products).Error
 	if err != nil {
-		return shared.Output{Err: err}
+		return shared.Output[domain.Products]{Err: err}
 	}
 
-	return shared.Output{Result: products}
+	return shared.Output[domain.Products]{Result: products}
 }
 
 // Count function
-func (r *ProductRepositoryGorm) Count(params *shared.Parameters) shared.Output {
+func (r *ProductRepositoryGorm) Count(params *shared.Parameters) shared.Output[int64] {
 	var count int64
 
 	db := r.db.Model(&domain.Product{})
@@ -78,8 +78,8 @@ func (r *ProductRepositoryGorm) Count(params *shared.Parameters) shared.Output {
 
 	err := db.Count(&count).Error
 	if err != nil {
-		return shared.Output{Err: err}
+		return shared.Output[int64]{Err: err}
 	}
 
-	return shared.Output{Result: count}
+	return shared.Output[int64]{Result: count}
 }
