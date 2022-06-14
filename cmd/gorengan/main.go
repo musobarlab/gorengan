@@ -7,7 +7,7 @@ import (
 	"syscall"
 
 	"github.com/musobarlab/gorengan/config"
-	"github.com/musobarlab/gorengan/server"
+	"github.com/musobarlab/gorengan/internal/server"
 )
 
 func main() {
