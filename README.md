@@ -1,6 +1,6 @@
 ## Gorengan
 
-[![Build Status](https://travis-ci.org/musobarlab/gorengan.svg?branch=master)](https://travis-ci.org/musobarlab/gorengan)
+[![Gorengan CI](https://github.com/musobarlab/gorengan/actions/workflows/ci.yml/badge.svg)](https://github.com/musobarlab/gorengan/actions/workflows/ci.yml)
 
 Golang GraphQL Server Starter Kit
 
