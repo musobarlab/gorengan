@@ -2,7 +2,7 @@
 
 You can use `Insomnia` as a GraphQL Client https://insomnia.rest/
 
-graphql endpoint http://localhost:3000/graphql.
+graphql endpoint http://localhost:3000/graphql/v1.
 This endpoint is secured using `basic auth`, open the `.env` for details.
 
 ### Create Product

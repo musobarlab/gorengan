@@ -1,36 +1,46 @@
 package schema
 
 import (
+	"errors"
 	"io/ioutil"
 	"strings"
 )
 
-const (
-	// GraphQLSchemaPath schema paths
-	GraphQLSchemaPath        = "./api/graphql/graphql_schema.graphql"
-	GraphQLProductSchemaPath = "./api/graphql/product.graphql"
-	GraphQLMetaSchemaPath    = "./api/graphql/meta.graphql"
-)
-
 // LoadGraphQLSchema will read graphql schema from file
-func LoadGraphQLSchema() (string, error) {
-	var schemaBuilder strings.Builder
+func LoadGraphQLSchema(version string) (string, error) {
+	switch version {
+	case "v1":
+		return loadV1Schema()
+	}
 
-	graphqlMetaSchema, err := ioutil.ReadFile(GraphQLMetaSchemaPath)
+	return "", errors.New("error loading graphql schema")
+}
+
+func loadV1Schema() (string, error) {
+
+	var (
+		schemaBuilder strings.Builder
+
+		graphQLSchemaPath        string = "./api/graphql/v1/graphql_schema.graphql"
+		graphQLProductSchemaPath string = "./api/graphql/v1/product.graphql"
+		graphQLMetaSchemaPath    string = "./api/graphql/v1/meta.graphql"
+	)
+
+	graphqlMetaSchema, err := ioutil.ReadFile(graphQLMetaSchemaPath)
 	if err != nil {
 		return "", err
 	}
 
 	schemaBuilder.Write(graphqlMetaSchema)
 
-	graphqlProductSchema, err := ioutil.ReadFile(GraphQLProductSchemaPath)
+	graphqlProductSchema, err := ioutil.ReadFile(graphQLProductSchemaPath)
 	if err != nil {
 		return "", err
 	}
 
 	schemaBuilder.Write(graphqlProductSchema)
 
-	graphqlSchema, err := ioutil.ReadFile(GraphQLSchemaPath)
+	graphqlSchema, err := ioutil.ReadFile(graphQLSchemaPath)
 	if err != nil {
 		return "", err
 	}

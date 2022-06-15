@@ -4,31 +4,21 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"reflect"
 
-	"github.com/graph-gophers/graphql-go"
 	"github.com/graph-gophers/graphql-go/relay"
-	otelgraphql "github.com/graph-gophers/graphql-go/trace/otel"
 	"gorm.io/gorm"
 
-	graphqlSchemaApi "github.com/musobarlab/gorengan/api/graphql"
 	"github.com/musobarlab/gorengan/config"
 	"github.com/musobarlab/gorengan/database"
-	cd "github.com/musobarlab/gorengan/internal/modules/category/delivery"
-	cr "github.com/musobarlab/gorengan/internal/modules/category/repository"
-	cu "github.com/musobarlab/gorengan/internal/modules/category/usecase"
-	pd "github.com/musobarlab/gorengan/internal/modules/product/delivery"
-	pr "github.com/musobarlab/gorengan/internal/modules/product/repository"
-	pu "github.com/musobarlab/gorengan/internal/modules/product/usecase"
 	"github.com/musobarlab/gorengan/internal/server/middleware"
 	"github.com/musobarlab/gorengan/pkg/shared"
 )
 
 // HTTPServer struct
 type HTTPServer struct {
-	port           int
-	graphQLHandler *relay.Handler
-	db             *gorm.DB
+	port             int
+	graphQLHandlerV1 *relay.Handler
+	db               *gorm.DB
 }
 
 // NewHTTPServer echo server constructor
@@ -38,67 +28,16 @@ func NewHTTPServer(port int) (*HTTPServer, error) {
 		return nil, err
 	}
 
-	// load graphql schema file, and convert to string
-	graphqlSchema, err := graphqlSchemaApi.LoadGraphQLSchema()
+	// schema V1
+	graphQLHandlerV1, err := initGraphqlSchemaV1(db)
 	if err != nil {
 		return nil, err
 	}
 
-	// initial repository
-	productRepository := pr.NewProductRepositoryGorm(db)
-	categoryRepository := cr.NewCategoryRepositoryGorm(db)
-
-	// initial usecase
-	productUsecase := pu.NewProductUsecaseImpl(productRepository, productRepository, categoryRepository)
-	categoryUsecase := cu.NewCategoryUsecaseImpl(categoryRepository, categoryRepository)
-
-	// initial graphql handler/ resolver
-	productGraphQLQueryHandler := &pd.GraphQLProductQueryHandler{ProductUsecase: productUsecase}
-	productGraphQLMutationHandler := &pd.GraphQLProductMutationHandler{ProductUsecase: productUsecase}
-	categoryGraphQLMutationHandler := &cd.GraphQLCategoryMutationHandler{CategoryUsecase: categoryUsecase}
-
-	// load schema and resolver
-	var resolverFields []reflect.StructField
-
-	resolverModules := make(map[string]interface{})
-	resolverModules[productGraphQLMutationHandler.Name()] = productGraphQLMutationHandler
-	resolverModules[categoryGraphQLMutationHandler.Name()] = categoryGraphQLMutationHandler
-	resolverModules[productGraphQLQueryHandler.Name()] = productGraphQLQueryHandler
-
-	for name, handler := range resolverModules {
-		resolverFields = append(resolverFields, reflect.StructField{
-			Name: name,
-			Type: reflect.TypeOf(handler),
-		})
-	}
-
-	resolverVal := reflect.New(reflect.StructOf(resolverFields)).Elem()
-	for k, v := range resolverModules {
-		val := resolverVal.FieldByName(k)
-		val.Set(reflect.ValueOf(v))
-	}
-
-	resolver := resolverVal.Addr().Interface()
-
-	// end load schema and resolver
-
-	// parse grapqhql schema to code
-	gqlSchema := graphql.MustParseSchema(
-		graphqlSchema,
-		resolver,
-		graphql.UseStringDescriptions(),
-		graphql.UseFieldResolvers(),
-
-		// tracing
-		graphql.Tracer(otelgraphql.DefaultTracer()),
-	)
-
-	graphQLHandler := &relay.Handler{Schema: gqlSchema}
-
 	return &HTTPServer{
-		port:           port,
-		graphQLHandler: graphQLHandler,
-		db:             db,
+		port:             port,
+		graphQLHandlerV1: graphQLHandlerV1,
+		db:               db,
 	}, nil
 }
 
@@ -116,9 +55,9 @@ func (s *HTTPServer) Run() {
 	})
 
 	// secure graphql route with Basic Auth
-	mux.Handle("/graphql", middleware.BasicAuth(
+	mux.Handle("/graphql/v1", middleware.BasicAuth(
 		middleware.NewBasicAuthConfig(config.BasicAuthUsername, config.BasicAuthPassword),
-		s.graphQLHandler,
+		s.graphQLHandlerV1,
 	))
 
 	log.Printf("Http server running on port %d\n", s.port)
